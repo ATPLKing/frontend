@@ -1,2 +1,9 @@
 # qodo
 .qodo
+
+# Jekyll files 
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
