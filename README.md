@@ -36,10 +36,19 @@ git clone https://github.com/ATPLKing/frontend.git
 cd frontend
 ```
 
-### 2. Install VS-Code live server extension or equivalent
+### 2. Run the project locally with Jekyll
 
-1. Go to the Extensions Tab.
-2. Search for "Live Server" and install it.
+1. Make sure you have [Ruby](https://www.ruby-lang.org/en/documentation/installation/) and [Bundler](https://bundler.io/) installed.
+2. Install Jekyll and project dependencies:
+  ```bash
+  gem install jekyll bundler
+  bundle install
+  ```
+3. Start the local server:
+  ```bash
+  bundle exec jekyll serve
+  ```
+4. Open your browser and navigate to `http://localhost:4000` to view the site.
 
 
 ## LICENSE 
