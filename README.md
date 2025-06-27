@@ -42,3 +42,11 @@ cd frontend
 2. Search for "Live Server" and install it.
 
 
+## LICENSE 
+
+
+This project is licensed under the GNU General Public License v3.0.
+You are free to use, modify, and distribute it under the terms of the license.
+
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+
