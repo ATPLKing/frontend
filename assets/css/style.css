@@ -1,0 +1,146 @@
+/** Initial value **/
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: rgb(94, 93, 93);
+  --question-color-box: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg-color: #202123;
+  --text-color: #f0f0f0;
+  --border-color: rgb(216, 213, 213);
+  --question-color-box: #ffffff;
+  --question-color-box: #3a3a3a;
+}
+
+
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/** HEADER **/
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 0 16px;
+}
+
+.navbar .theme-btn, 
+.navbar .github-btn { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-style: none;
+}
+
+
+.navbar .donation-link {
+  padding: 8px;
+  border-radius: 25px;
+  background-color: rgb(25, 118, 210);
+  color: white;
+  font-size: 1rem;
+}
+
+/** HEADER **/
+
+/** Question container **/
+.question-container {
+  padding: 50px;
+}
+
+.question-container .action-bar .nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: none;
+  border-radius: 5px;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+}
+
+.action-bar {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: var(--border-color);
+}
+
+.tab-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* light grey shadow */
+  background-color: var(--question-color-box);
+  padding: 1rem;
+}
+
+/** Question container **/
+
+/** Nav container **/
+.nav-container {
+  padding: 50px;
+}
+
+.navigation-box {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  background-color: var(--question-color-box);
+  border-color: var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.question-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 4px;
+}
+
+.question-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 30px;
+}
+
+.page-link {
+  color: var(--text-color);
+}
+
+/** Nav container **/
+.nav-tabs .nav-link {
+  color: #aeacac;
+}
+.nav-tabs .nav-link.active {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom: rgb(15, 15, 179);
+}
+.answer {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 2px solid #444;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.answer.correct {
+  border-color: green;
+  color: green;
+}
+
+.answer.incorrect {
+  border-color: red;
+  color: red;
+}
