@@ -1,0 +1,184 @@
+---
+layout: default
+title: Home
+permalink: /home/
+---
+
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-9 quiz-config-box text-center p-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h2 class="mb-3">Test Configuration</h2>
+          <label for="uv-select" class="mb-3">SUBJECT</label>
+          <select name="uv-select"  class="form-control text-center" id="uv-select">
+            <option value="">METEOROLOGY</option>
+            <option value="">MASS AND BALANCE</option>
+          </select>
+          <div class="row btn-box mt-3">
+            <div class="col-6">
+              <button class="btn quiz-mode-btn btn-lg w-100">
+                TEST
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn quiz-mode-btn btn-lg w-100">
+                EXAM
+              </button>
+            </div>
+          </div>
+          <div class="row radio-box mt-3">
+            <div class="col-md-4">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question-type"
+                value="all"
+                id="option-all"
+              />
+              <label class="form-check-label" for="option-all"
+                >All questions</label
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question-type"
+                value="with"
+                id="option-with"
+              />
+              <label class="form-check-label" for="option-with"
+                >With Annexes</label
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question-type"
+                value="without"
+                id="option-without"
+              />
+              <label class="form-check-label" for="option-without"
+                >Without Annexes</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 justify-content-center align-items-center">
+        <div class="col-md-10 subject-accordion">
+          <div class="accordion" id="subjectAccordion">
+            <!-- Top Level Subject -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#subject-1"
+                >
+                  <input
+                    class="form-check-input me-2"
+                    type="checkbox"
+                    checked
+                  />
+                  050-01 - The Atmosphere
+                  <span class="ms-auto badge bg-secondary">343</span>
+                </button>
+              </h2>
+              <div
+                id="subject-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#subjectAccordion"
+              >
+                <div class="accordion-body ps-5">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-1"
+                  >
+                    <label class="form-check-label">
+                      <input
+                        class="form-check-input me-2"
+                        type="checkbox"
+                        checked
+                      />
+                      050-01-01 - Composition, extent, vertical division
+                    </label>
+                    <span class="badge bg-secondary">57</span>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-1"
+                  >
+                    <label class="form-check-label">
+                      <input
+                        class="form-check-input me-2"
+                        type="checkbox"
+                        checked
+                      />
+                      050-01-02 - Air temperature
+                    </label>
+                    <span class="badge bg-secondary">62</span>
+                  </div>
+                  <!-- Add more sub-items similarly -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Next Top-Level Subject -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#subject-2"
+                >
+                  <input
+                    class="form-check-input me-2"
+                    type="checkbox"
+                    checked
+                  />
+                  050-02 - Wind
+                  <span class="ms-auto badge bg-secondary">274</span>
+                </button>
+              </h2>
+              <div
+                id="subject-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#subjectAccordion"
+              >
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 justify-content-center align-items-center">
+        <div class="col-md-8">
+          Test Questions
+          <input
+            type="number"
+            class="ms-2 me-2 text-center form border border-secondary"
+            name="desired-questions-count"
+            id="desired-questions-count"
+            min="1"
+            required
+          />
+          of
+          <span id="selected-questions-count" class="text-danger fw-bold"
+            >1200</span
+          >
+          Questions
+        </div>
+      </div>
+      <div class="row mt-3 justify-content-center align-items-center">
+        <div class="col-md-3">
+          <button class="btn quiz-mode-btn btn-lg w-100">
+            START TEST
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
