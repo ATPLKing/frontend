@@ -10,7 +10,35 @@ permalink: /
       <div class="row justify-content-center">
         <div class="col-md-6">
           <h2 class="mb-3">Test Configuration</h2>
-          <label for="uv-select" class="mb-3">SUBJECT</label>
+          <label for="db-select" class="mb-3">DATABASE</label>
+            <div class="row radio-box mt-3">
+            <div class="col-6">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="db-selection"
+                value="A"
+                id="option-a"
+              />
+              <label class="form-check-label" for="option-a"
+                >AIRPLANE</label
+              >
+            </div>
+            <div class="col-6">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="db-selection"
+                value="H"
+                id="option-h"
+                checked
+              />
+              <label class="form-check-label" for="option-with"
+                >HELICOPTER</label
+              >
+            </div>
+          </div>
+          <label for="uv-select" class="mt-3 mb-3">SUBJECT</label>
           <select
             name="uv-select"
             class="form-control text-center"
@@ -35,6 +63,7 @@ permalink: /
                 name="question-type"
                 value="all"
                 id="option-all"
+                checked
               />
               <label class="form-check-label" for="option-all"
                 >All questions</label
