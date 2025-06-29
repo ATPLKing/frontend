@@ -1,0 +1,208 @@
+---
+layout: default
+title: Result
+permalink: /result/
+---
+
+<div class="container-fluid">
+  <div class="row result-banner succeeded">
+    <div class="col-7 p-4 text-white">
+      <h3 class="mb-3">GRADE REPORT</h3>
+      <h5 class="mb-2">
+        <span id="subject">050 - Meteorology</span>
+        |
+        <span id="db">AIRPLANE</span>
+        |
+        <span id="mode">TEST</span>
+      </h5>
+      <h6>
+        Time spent : <span id="time-spent">00:15:74</span> | Correct
+        <span id="correct-answers-count"> 45 </span> of
+        <span id="questions-count">48</span> Questions
+      </h6>
+    </div>
+    <div
+      class="col-5 d-flex justify-content-md-end p-3 overflow-x-hidden text-white"
+    >
+      <div class="position-relative">
+        <canvas id="grade-bar" width="150" height="150"></canvas>
+        <div
+          id="chartLabel"
+          class="position-absolute top-50 start-50 translate-middle text-center"
+        >
+          <h3>
+            <strong><span id="percentage">100%</span></strong>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5 d-flex justify-content-center">
+    <div class="col-10">
+      <div class="answer-card mb-3 incorrect p-3" data-bs-toggle="modal" data-bs-target="#questionModal">
+        <h6>Question N° <span id="question-id">12145</span></h6>
+        <p class="mt-1">
+          What is the approximate wind direction at FL340 in the boxed region of
+          the chart?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            class="me-2 form-check-input correct"
+            checked
+          />
+          <span>230°T</span>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            class="me-2 form-check-input incorrect"
+            checked
+          />
+          <span>260°T</span>
+        </div>
+      </div>
+      <div class="answer-card mb-3 correct p-3" data-bs-toggle="modal" data-bs-target="#questionModal">
+        <h6>Question N° <span id="question-id">12145</span></h6>
+        <p class="mt-1">
+          What is the approximate wind direction at FL340 in the boxed region of
+          the chart?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            class="me-2 form-check-input correct"
+            checked
+          />
+          <span>230°T</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="questionModalLabel">Question Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalQuestionBody">
+        <!-- Question content will be loaded here -->
+               <ul class="nav nav-tabs" id="questionTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="question-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#question"
+            type="button"
+            role="tab"
+            aria-controls="question"
+            aria-selected="true"
+          >
+            <span class="iconify mr-2" data-icon="zondicons:question"></span>
+            Question
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="explanation-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#explanation"
+            type="button"
+            role="tab"
+            aria-controls="explanation"
+            aria-selected="false"
+          >
+            <span class="iconify mr-2" data-icon="ion:bulb"></span>
+            Explanation
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tabs Content -->
+      <div class="tab-content border border-top-0 p-3" id="questionTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="question"
+          role="tabpanel"
+          aria-labelledby="question-tab"
+        >
+          <p>
+            <strong>Refer to figure.</strong><br />
+            What is the approximate wind direction at FL340 in the boxed region
+            of the chart?
+          </p>
+
+          <!-- Answers -->
+          <div class="answer correct">A. 230°(T)</div>
+          <div class="answer">B. 290°(T)</div>
+          <div class="answer">C. 270°(T)</div>
+          <div class="answer incorrect">D. 270°(T)</div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="explanation"
+          role="tabpanel"
+          aria-labelledby="explanation-tab"
+        >
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc in
+            commodo turpis, quis convallis ex. Morbi vehicula lectus commodo est
+            porttitor congue ac sed purus. Vivamus ut eleifend lectus, eu
+            euismod dolor. In rutrum leo fringilla viverra interdum. Vestibulum
+            mollis, quam sit amet vestibulum aliquet, risus justo dignissim
+            nulla, sed mattis massa est sit amet arcu. Morbi ullamcorper congue
+            lectus ac molestie. Sed ac ex sed dui vulputate dapibus. Donec quis
+            imperdiet neque, sed aliquet arcu. Etiam leo quam, cursus eget enim
+            eget, facilisis finibus est. Phasellus interdum turpis in tortor
+            tincidunt, id elementum lorem fringilla. Nunc in posuere lorem.
+            Nullam et massa eget odio convallis dignissim in a magna. Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut
+            suscipit enim, non porttitor neque. Vivamus viverra malesuada dui
+            dictum tristique
+          </p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const percentage = 75;
+  const color = percentage >= 75 ? "#3e8e41" : "#ff745e";
+  const ctx = document.getElementById("grade-bar").getContext("2d");
+  const data = {
+    datasets: [
+      {
+        data: [80, 20], // 100% progress
+        backgroundColor: ["#ffffff", color],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const options = {
+    cutout: "75%", // size of center hole
+    rotation: -90,
+    circumference: 360,
+    plugins: {
+      tooltip: { enabled: true },
+      legend: { display: false },
+    },
+    animation: {
+      animateRotate: true,
+      duration: 1500,
+    },
+  };
+
+  new Chart(ctx, {
+    type: "doughnut",
+    data: data,
+    options: options,
+  });
+</script>
