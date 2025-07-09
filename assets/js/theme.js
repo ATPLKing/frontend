@@ -28,6 +28,9 @@ function toggleMode() {
   localStorage.setItem("themeInfo", JSON.stringify(themeInfo));
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+function themeHandler() {
   loadTheme();
-});
+  document.getElementById("toggle-theme").addEventListener("click", toggleMode);
+}
+
+export { themeHandler };

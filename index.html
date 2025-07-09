@@ -10,30 +10,28 @@ permalink: /
       <div class="row justify-content-center">
         <div class="col-md-6">
           <h2 class="mb-3">Test Configuration</h2>
-          <label for="db-select" class="mb-3">DATABASE</label>
-            <div class="row radio-box mt-3">
+          <p class="mb-3">DATABASE</p>
+          <div class="row radio-box mt-3">
             <div class="col-6">
               <input
                 class="form-check-input"
                 type="radio"
-                name="db-selection"
-                value="A"
+                name="db-select"
                 id="option-a"
+                value="A"
               />
-              <label class="form-check-label" for="option-a"
-                >AIRPLANE</label
-              >
+              <label class="form-check-label" for="option-a">AIRPLANE</label>
             </div>
             <div class="col-6">
               <input
                 class="form-check-input"
                 type="radio"
-                name="db-selection"
+                name="db-select"
                 value="H"
                 id="option-h"
                 checked
               />
-              <label class="form-check-label" for="option-with"
+              <label class="form-check-label" for="option-h"
                 >HELICOPTER</label
               >
             </div>
@@ -44,18 +42,19 @@ permalink: /
             class="form-control text-center"
             id="uv-select"
           >
-            <option value="">METEOROLOGY</option>
-            <option value="">MASS AND BALANCE</option>
+            <option value="">Choisissez une UV</option>
           </select>
           <div class="row btn-box mt-3">
             <div class="col-6">
-              <button class="btn quiz-mode-btn btn-lg w-100">TEST</button>
+              <button class="btn quiz-mode-btn btn-lg w-100" id="test-btn">
+                TEST
+              </button>
             </div>
             <div class="col-6">
               <button class="btn quiz-mode-btn btn-lg w-100">EXAM</button>
             </div>
           </div>
-          <div class="row radio-box mt-3">
+          <div class="row radio-box mt-3 test-options d-none">
             <div class="col-md-4">
               <input
                 class="form-check-input"
@@ -63,7 +62,7 @@ permalink: /
                 name="question-type"
                 value="all"
                 id="option-all"
-                checked
+                disabled
               />
               <label class="form-check-label" for="option-all"
                 >All questions</label
@@ -76,6 +75,7 @@ permalink: /
                 name="question-type"
                 value="with"
                 id="option-with"
+                disabled
               />
               <label class="form-check-label" for="option-with"
                 >With Annexes</label
@@ -88,6 +88,7 @@ permalink: /
                 name="question-type"
                 value="without"
                 id="option-without"
+                checked
               />
               <label class="form-check-label" for="option-without"
                 >Without Annexes</label
@@ -96,92 +97,18 @@ permalink: /
           </div>
         </div>
       </div>
-      <div class="row mt-3 justify-content-center align-items-center">
+      <div
+        class="row mt-3 justify-content-center align-items-center test-options d-none"
+      >
         <div class="col-md-10 subject-accordion">
           <div class="accordion" id="subjectAccordion">
-            <!-- Top Level Subject -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#subject-1"
-                >
-                  <input
-                    class="form-check-input me-2"
-                    type="checkbox"
-                    checked
-                  />
-                  050-01 - The Atmosphere
-                  <span class="ms-auto badge bg-secondary">343</span>
-                </button>
-              </h2>
-              <div
-                id="subject-1"
-                class="accordion-collapse collapse"
-                data-bs-parent="#subjectAccordion"
-              >
-                <div class="accordion-body ps-5">
-                  <div
-                    class="d-flex justify-content-between align-items-center mb-1"
-                  >
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input me-2"
-                        type="checkbox"
-                        checked
-                      />
-                      050-01-01 - Composition, extent, vertical division
-                    </label>
-                    <span class="badge bg-secondary">57</span>
-                  </div>
-                  <div
-                    class="d-flex justify-content-between align-items-center mb-1"
-                  >
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input me-2"
-                        type="checkbox"
-                        checked
-                      />
-                      050-01-02 - Air temperature
-                    </label>
-                    <span class="badge bg-secondary">62</span>
-                  </div>
-                  <!-- Add more sub-items similarly -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Next Top-Level Subject -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#subject-2"
-                >
-                  <input
-                    class="form-check-input me-2"
-                    type="checkbox"
-                    checked
-                  />
-                  050-02 - Wind
-                  <span class="ms-auto badge bg-secondary">274</span>
-                </button>
-              </h2>
-              <div
-                id="subject-2"
-                class="accordion-collapse collapse"
-                data-bs-parent="#subjectAccordion"
-              ></div>
-            </div>
+            <!-- accordion item here -->
           </div>
         </div>
       </div>
-      <div class="row mt-3 justify-content-center align-items-center">
+      <div
+        class="row mt-3 justify-content-center align-items-center test-options d-none"
+      >
         <div class="col-md-8">
           Test Questions
           <input
@@ -189,21 +116,23 @@ permalink: /
             class="ms-2 me-2 text-center form border border-secondary"
             name="desired-questions-count"
             id="desired-questions-count"
-            min="1"
             required
           />
           of
           <span id="selected-questions-count" class="text-danger fw-bold"
-            >1200</span
+            ></span
           >
           Questions
         </div>
       </div>
-      <div class="row mt-3 justify-content-center align-items-center">
+      <div
+        class="row mt-3 justify-content-center align-items-center test-options d-none"
+      >
         <div class="col-md-3">
-          <button class="btn quiz-mode-btn btn-lg w-100">START TEST</button>
+          <button class="btn quiz-mode-btn btn-lg w-100" id="start-btn">START TEST</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script type="module" src="{{ '/assets/js/index.js' | relative_url }}"></script>

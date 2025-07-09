@@ -12,7 +12,7 @@
   --text-color: #f0f0f0;
   --border-color: rgb(216, 213, 213);
   --question-color-box: #3a3a3a;
-  --question-nav-text-color: rgb(172, 183, 239);
+  --question-nav-text-color: rgb(0, 0, 0);
 }
 
 
@@ -146,6 +146,7 @@ body {
   border-width: 1px;
   border-color: var(--border-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  background-color: rgb(216, 213, 213);
   color: var(--question-nav-text-color);
 }
 
