@@ -94,7 +94,7 @@ function TestQuestionsOptions(questions) {
 
 /**
  * Sets up synchronization between parent and child checkboxes within accordion components.
- * 
+ *
  * This function ensures that when a child checkbox within an accordion body is checked or unchecked,
  * the corresponding parent checkbox in the accordion button reflects the change. Conversely, when a
  * parent checkbox is toggled, all child checkboxes within the same accordion item are updated to match
@@ -153,4 +153,165 @@ function hideTestOptions() {
   });
 }
 
-export { renderSubjectAccordion, TestQuestionsOptions, fillUVsOptions, showTestOptions, hideTestOptions };
+/**
+ * Displays a question and its answer options on the UI.
+ *
+ * This function updates the DOM elements to show the current question
+ * and its possible answers based on the provided index. It also updates
+ * the question progression display.
+ *
+ * @param {Array} questions - An array of question objects, each containing
+ *                            an 'id', 'question', and 'options'.
+ * @param {number} index - The index of the current question to display.
+ */
+function showQuestion(questions, index) {
+  const questionIDSpan = document.getElementById("question-id");
+  const questionContainer = document.getElementById("question-container");
+  const answerOptionsContainer = document.getElementById(
+    "answer-options-container"
+  );
+
+  const explanationTabBtn = document.getElementById("explanation-btn");
+  const explanationContainer = document.getElementById("explanation-container");
+
+  if (questions[index]) {
+    const questionDict = questions[index];
+    // display the question id too
+    questionIDSpan.textContent = `N°: ${questionDict.id}`;
+
+    // display the explanation if given or hide the tab btn 
+    if (questionDict.explanation) {
+      explanationContainer.innerHTML = questionDict.explanation;
+      explanationTabBtn.classList.remove("d-none");
+    } else {
+      explanationContainer.innerHTML = "";
+      explanationTabBtn.classList.add("d-none");
+    }
+
+
+    // clean previous elements
+    questionContainer.innerHTML = "";
+    answerOptionsContainer.innerHTML = "";
+
+    questionContainer.innerHTML = questionDict.question;
+    questionDict.options.forEach((option, i) => {
+      const answerOptionDiv = document.createElement("div");
+      answerOptionDiv.className = "answer row d-flex align-items-center ";
+      answerOptionDiv.innerHTML = 
+      `<div class="col-1 fw-bold fs-3">${String.fromCharCode(65 + i)}.</div>
+       <div class="col-11">${option.text}</div>`;
+      answerOptionsContainer.appendChild(answerOptionDiv);
+    });
+    // show the question progression
+    showQuestionCountProgression(questions, index);
+  }
+}
+
+/**
+ * Updates the question count display with the current question index and total number of questions.
+ *
+ * @param {Array} questions - The array of questions.
+ * @param {number} index - The current question index.
+ */
+function showQuestionCountProgression(questions, index) {
+  const questionCountDiv = document.getElementById("question-count");
+  const indexSpan = questionCountDiv?.querySelector("#index");
+  const totalSpan = questionCountDiv?.querySelector("#total");
+
+  indexSpan.textContent = index + 1;
+  totalSpan.textContent = questions.length;
+}
+
+/**
+ * Renders a navigation container with buttons for each question, supporting pagination.
+ *
+ * This function clears the existing content of the element with the class
+ * "question-grid" and populates it with navigation buttons for the current page.
+ * Each button corresponds to a question and is labeled with its index (starting from 1).
+ * Pagination controls are added to navigate between pages.
+ *
+ * @param {Array} questions - An array of questions to generate navigation buttons for.
+ * @param {number} currentPage - The current page number (starting from 1).
+ * @param {number} questionsPerPage - The number of questions to display per page.
+ */
+function renderNavigationContainer(questions, currentPage = 1, questionsPerPage = 100) {
+  const questionGrid = document.getElementsByClassName("question-grid")[0];
+  questionGrid.innerHTML = "";
+
+  const totalQuestions = questions.length;
+  const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const endIndex = Math.min(startIndex + questionsPerPage, totalQuestions);
+
+  // Render navigation buttons for the current page
+  for (let i = startIndex; i < endIndex; i++) {
+    const navBtn = document.createElement("a");
+    navBtn.className = "btn question-nav";
+    navBtn.setAttribute("data-question-index", i);
+    navBtn.textContent = i + 1;
+    questionGrid.appendChild(navBtn);
+  }
+
+  // Render pagination controls
+  const paginationContainer = document.querySelector(".pagination");
+  paginationContainer.innerHTML = "";
+
+  const prevPageItem = document.createElement("li");
+  prevPageItem.className = "page-item" + (currentPage === 1 ? " disabled" : "");
+  const prevPageLink = document.createElement("a");
+  prevPageLink.className = "page-link";
+  prevPageLink.href = "#";
+  prevPageLink.setAttribute("aria-label", "Previous");
+  prevPageLink.innerHTML = "<span aria-hidden='true'>&laquo;</span>";
+  prevPageLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      renderNavigationContainer(questions, currentPage - 1, questionsPerPage);
+    }
+  };
+  prevPageItem.appendChild(prevPageLink);
+  paginationContainer.appendChild(prevPageItem);
+
+  for (let page = 1; page <= totalPages; page++) {
+    const pageItem = document.createElement("li");
+    pageItem.className = "page-item" + (page === currentPage ? " active" : "");
+    const pageLink = document.createElement("a");
+    pageLink.className = "page-link";
+    pageLink.href = "#";
+    pageLink.textContent = page;
+    pageLink.onclick = (e) => {
+      e.preventDefault();
+      renderNavigationContainer(questions, page, questionsPerPage);
+    };
+    pageItem.appendChild(pageLink);
+    paginationContainer.appendChild(pageItem);
+  }
+
+  const nextPageItem = document.createElement("li");
+  nextPageItem.className = "page-item" + (currentPage === totalPages ? " disabled" : "");
+  const nextPageLink = document.createElement("a");
+  nextPageLink.className = "page-link";
+  nextPageLink.href = "#";
+  nextPageLink.setAttribute("aria-label", "Next");
+  nextPageLink.innerHTML = "<span aria-hidden='true'>&raquo;</span>";
+  nextPageLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      renderNavigationContainer(questions, currentPage + 1, questionsPerPage);
+    }
+  };
+  nextPageItem.appendChild(nextPageLink);
+  paginationContainer.appendChild(nextPageItem);
+}
+
+export {
+  renderSubjectAccordion,
+  TestQuestionsOptions,
+  fillUVsOptions,
+  showTestOptions,
+  hideTestOptions,
+  showQuestion,
+  renderNavigationContainer
+};
