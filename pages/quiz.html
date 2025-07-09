@@ -4,7 +4,6 @@ title: Quiz
 permalink: /quiz/
 ---
 
-
 <!-- Main layout -->
 <div class="container-fluid">
   <div class="row">
@@ -18,9 +17,9 @@ permalink: /quiz/
           <span class="iconify" data-icon="bxs:left-arrow"></span>
         </button>
 
-        <div class="question-count">
-          <span id="index">1</span> /
-          <span id="total">122</span>
+        <div class="question-count" id="question-count">
+          <span id="index"></span> /
+          <span id="total"></span>
         </div>
 
         <div>
@@ -42,9 +41,9 @@ permalink: /quiz/
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
-            id="question-tab"
+            id="question-btn"
             data-bs-toggle="tab"
-            data-bs-target="#question"
+            data-bs-target="#question-tab"
             type="button"
             role="tab"
             aria-controls="question"
@@ -57,9 +56,9 @@ permalink: /quiz/
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="explanation-tab"
+            id="explanation-btn"
             data-bs-toggle="tab"
-            data-bs-target="#explanation"
+            data-bs-target="#explanation-tab"
             type="button"
             role="tab"
             aria-controls="explanation"
@@ -75,44 +74,22 @@ permalink: /quiz/
       <div class="tab-content border border-top-0 p-3" id="questionTabContent">
         <div
           class="tab-pane fade show active"
-          id="question"
+          id="question-tab"
           role="tabpanel"
           aria-labelledby="question-tab"
         >
-          <p>
-            <strong>Refer to figure.</strong><br />
-            What is the approximate wind direction at FL340 in the boxed region
-            of the chart?
-          </p>
+          <p id="question-container"></p>
 
           <!-- Answers -->
-          <div class="answer correct">A. 230°(T)</div>
-          <div class="answer">B. 290°(T)</div>
-          <div class="answer">C. 270°(T)</div>
-          <div class="answer incorrect">D. 270°(T)</div>
+          <div id="answer-options-container"></div>
         </div>
         <div
           class="tab-pane fade"
-          id="explanation"
+          id="explanation-tab"
           role="tabpanel"
           aria-labelledby="explanation-tab"
         >
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc in
-            commodo turpis, quis convallis ex. Morbi vehicula lectus commodo est
-            porttitor congue ac sed purus. Vivamus ut eleifend lectus, eu
-            euismod dolor. In rutrum leo fringilla viverra interdum. Vestibulum
-            mollis, quam sit amet vestibulum aliquet, risus justo dignissim
-            nulla, sed mattis massa est sit amet arcu. Morbi ullamcorper congue
-            lectus ac molestie. Sed ac ex sed dui vulputate dapibus. Donec quis
-            imperdiet neque, sed aliquet arcu. Etiam leo quam, cursus eget enim
-            eget, facilisis finibus est. Phasellus interdum turpis in tortor
-            tincidunt, id elementum lorem fringilla. Nunc in posuere lorem.
-            Nullam et massa eget odio convallis dignissim in a magna. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut
-            suscipit enim, non porttitor neque. Vivamus viverra malesuada dui
-            dictum tristique
-          </p>
+          <p id="explanation-container"></p>
         </div>
       </div>
     </div>
@@ -125,44 +102,14 @@ permalink: /quiz/
         </button>
         <button class="btn btn-secondary w-100 mb-3">Terminer</button>
         <div class="navigation-box">
-          <div class="question-grid p-2">
-            <!-- Example static buttons, replace with JS for dynamic generation if needed -->
-            <a class="btn question-nav answered">1</a>
-            <a class="btn question-nav">2</a>
-            <a class="btn question-nav correct">3</a>
-            <a class="btn question-nav incorrect">4</a>
-            <a class="btn question-nav">5</a>
-            <a class="btn question-nav">6</a>
-            <a class="btn question-nav">7</a>
-            <a class="btn question-nav">8</a>
-            <a class="btn question-nav">9</a>
-            <a class="btn question-nav">10</a>
-          </div>
+          <div class="question-grid p-2"></div>
 
-          <div class="pagination mt-2 d-flex justify-content-center">
-            <nav aria-label="Page navigation">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <!-- navigation button generated dynamically -->
+          <div class="pagination mt-2 mb-2 d-flex justify-content-center"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="module" src="{{ '/assets/js/quiz.js' | relative_url }}"></script>
