@@ -11,7 +11,7 @@ import { shuffleArray } from "./utils/array.js";
 import { countQuestionsPerSubject } from "./utils/stats.js";
 import {
   filterQuestionsByDatabase,
-  filterQuestionsBySubtopics,
+  filterQuestionsBySubtopics
 } from "./utils/question.js";
 
 let selectedDatabase = null;
@@ -193,7 +193,20 @@ function startTestBtnListener() {
 
 
 function startTest() {
+  
+  localStorage.clear();
+
   desiredQuestionsCount = document.getElementById("desired-questions-count").value;
+
+ if (questionsCopy.length == 0) {
+    alertify.warning("La sélection de question ne contient aucune question.");
+    return;
+  };
+
+  if (desiredQuestionsCount <= 0 || desiredQuestionsCount > questionsCopy.length) {
+    alertify.warning(`Entrez un nombre de questions compris entre 1 et ${questionsCopy.length}.`)
+    return;
+  }
 
   // shuffle questions and options
   questionsCopy = shuffleArray(questionsCopy);
