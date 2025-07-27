@@ -190,11 +190,13 @@ body {
 .answer.correct {
   border-color: green;
   color: green;
+  font-weight: bold;
 }
 
 .answer.incorrect {
   border-color: red;
   color: red;
+  font-weight: bold;
 }
 
 /*** CONFIG PAGE CSS END ***/
@@ -235,3 +237,34 @@ body {
 
 
 /*** RESULT PAGE CSS ***/
+
+
+/**
+* ALERTIJY JS
+*/
+.ajs-header, .ajs-body, .ajs-footer, .ajs-dialog {
+ color: var(--text-color);
+ background-color: var(--question-color-box) !important;
+}
+
+.ajs-header {
+  border-bottom: 1px solid var(--border-color);
+  font-weight: bold;
+}
+
+.ajs-footer {
+  border-top: 1px solid var(--border-color);
+}
+
+.ajs-footer {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+.ajs-button {
+  background-color: #0474C4;
+  border: none;
+  color: #fff;
+}
