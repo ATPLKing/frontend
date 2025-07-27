@@ -1,3 +1,5 @@
+import { buildAnswerDict } from "./utils/answer.js";
+
 /**
  * Renders an accordion UI component with subjects and their subtopics.
  *
@@ -179,7 +181,7 @@ function showQuestion(questions, index) {
     // display the question id too
     questionIDSpan.textContent = `N°: ${questionDict.id}`;
 
-    // display the explanation if given or hide the tab btn 
+    // display the explanation if given or hide the tab btn
     if (questionDict.explanation) {
       explanationContainer.innerHTML = questionDict.explanation;
       explanationTabBtn.classList.remove("d-none");
@@ -188,7 +190,6 @@ function showQuestion(questions, index) {
       explanationTabBtn.classList.add("d-none");
     }
 
-
     // clean previous elements
     questionContainer.innerHTML = "";
     answerOptionsContainer.innerHTML = "";
@@ -196,9 +197,11 @@ function showQuestion(questions, index) {
     questionContainer.innerHTML = questionDict.question;
     questionDict.options.forEach((option, i) => {
       const answerOptionDiv = document.createElement("div");
-      answerOptionDiv.className = "answer row d-flex align-items-center ";
-      answerOptionDiv.innerHTML = 
-      `<div class="col-1 fw-bold fs-3">${String.fromCharCode(65 + i)}.</div>
+      answerOptionDiv.className = "answer row d-flex align-items-center";
+      answerOptionDiv.setAttribute("data-option-index", JSON.stringify(i));
+      answerOptionDiv.innerHTML = `<div class="col-1 fw-bold fs-3">${String.fromCharCode(
+        65 + i
+      )}.</div>
        <div class="col-11">${option.text}</div>`;
       answerOptionsContainer.appendChild(answerOptionDiv);
     });
@@ -234,7 +237,11 @@ function showQuestionCountProgression(questions, index) {
  * @param {number} currentPage - The current page number (starting from 1).
  * @param {number} questionsPerPage - The number of questions to display per page.
  */
-function renderNavigationContainer(questions, currentPage = 1, questionsPerPage = 100) {
+function renderNavigationContainer(
+  questions,
+  currentPage = 1,
+  questionsPerPage = 100
+) {
   const questionGrid = document.getElementsByClassName("question-grid")[0];
   questionGrid.innerHTML = "";
 
@@ -290,7 +297,8 @@ function renderNavigationContainer(questions, currentPage = 1, questionsPerPage 
   }
 
   const nextPageItem = document.createElement("li");
-  nextPageItem.className = "page-item" + (currentPage === totalPages ? " disabled" : "");
+  nextPageItem.className =
+    "page-item" + (currentPage === totalPages ? " disabled" : "");
   const nextPageLink = document.createElement("a");
   nextPageLink.className = "page-link";
   nextPageLink.href = "#";
@@ -306,6 +314,169 @@ function renderNavigationContainer(questions, currentPage = 1, questionsPerPage 
   paginationContainer.appendChild(nextPageItem);
 }
 
+
+/**
+ * Renders a series of question and answer cards within the specified container.
+ * Each card displays the question text, the correct answer, and, if applicable,
+ * the user's incorrect answer. Cards are styled based on the correctness of the
+ * user's answer and are clickable to open a modal for detailed view.
+ *
+ * @param {Array} questions - An array of question objects, each containing an id,
+ *                            question text, and options with a correct flag.
+ * @param {Array} userAnswers - An array of user-selected answer indices corresponding
+ *                              to each question.
+ */
+function renderQACards(questions, userAnswers) {
+  const QADict = buildAnswerDict(questions, userAnswers);
+
+  const answersCardsContainer = document.getElementById(
+    "answers-cards-container"
+  );
+  answersCardsContainer.innerHTML = "";
+
+  questions.forEach((question, idx) => {
+    const [userAnswerIndex, correctIndex] = QADict[idx];
+
+    const questionCardHTML = `<div class="answer-card ${
+      userAnswerIndex !== correctIndex ? "incorrect" : "correct"
+    } p-3 mb-3" 
+           data-index="${idx}" data-bs-toggle="modal" data-bs-target="#questionModal">
+        <h6>Question N° <span class="question-id">${question.id}</span></h6>
+        <p class="mt-1">
+          ${question.question}
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            class="me-2 form-check-input correct"
+            checked
+          />
+          <span>${question.options[correctIndex].text}</span>
+        </div>
+        ${
+          userAnswerIndex !== correctIndex
+            ? `<div>
+              <input
+                type="checkbox"
+                class="me-2 form-check-input incorrect"
+                checked
+              />
+              <span>${question.options[userAnswerIndex].text}</span>
+            </div>`
+            : ""
+        }`;
+    answersCardsContainer.insertAdjacentHTML("beforeend", questionCardHTML);
+
+    document.querySelectorAll(".answer-card").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        const index = parseInt(card.getAttribute("data-index"));
+        showQAmodal(index, questions, userAnswers);
+      });
+    });
+  });
+}
+
+
+/**
+ * Builds HTML for modal tabs displaying a question and its options, with an optional explanation tab.
+ *
+ * @param {Object} question - The question object containing details for rendering.
+ * @returns {string} The HTML string for the modal tabs and content.
+ */
+function buildModalTabs(question) {
+  const hasExplanation = !!question.explanation;
+  let navTabs = `
+    <ul class="nav nav-tabs" id="questionTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="question-tab" data-bs-toggle="tab" data-bs-target="#question" type="button" role="tab" aria-controls="question" aria-selected="true">
+          <span class="iconify mr-2" data-icon="zondicons:question"></span>
+          Question
+        </button>
+      </li>
+      ${
+        hasExplanation
+          ? `
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="explanation-tab" data-bs-toggle="tab" data-bs-target="#explanation" type="button" role="tab" aria-controls="explanation" aria-selected="false">
+          <span class="iconify mr-2" data-icon="ion:bulb"></span>
+          Explanation
+        </button>
+      </li>
+      `
+          : ""
+      }
+    </ul>
+  `;
+
+  let tabContent = `
+    <div class="tab-content border border-top-0 p-3" id="questionTabContent">
+      <div class="tab-pane fade show active" id="question" role="tabpanel" aria-labelledby="question-tab">
+        <p>
+          ${question.question}
+        </p>
+        ${question.options
+          .map((option, i) => {
+            let classes = "answer";
+            if (question.correctIndex === i) classes += " correct";
+            if (
+              question.userAnswerIndex !== question.correctIndex &&
+              question.userAnswerIndex === i
+            )
+              classes += " incorrect";
+            return `<div class= "answer row d-flex align-items-center ${classes}">
+                  <div class="col-1 fw-bold fs-3">${String.fromCharCode(
+                    65 + i
+                  )}.</div>
+                <div class="col-11">${option.text}</div>
+              </div>`;
+          })
+          .join("")}
+      </div>
+      ${
+        hasExplanation
+          ? `
+      <div class="tab-pane fade" id="explanation" role="tabpanel" aria-labelledby="explanation-tab">
+        <p>
+          ${question.explanation}
+        </p>
+      </div>
+      `
+          : ""
+      }
+    </div>
+  `;
+  return navTabs + tabContent;
+}
+
+
+/**
+ * Displays a modal with the question and answer details for a given question index.
+ *
+ * This function retrieves the user's answer and the correct answer for the specified
+ * question index, attaches these indices to the question object, and updates the modal
+ * content with the question and its options. It also sets the modal title to reflect
+ * the question number.
+ *
+ * @param {number} questionIndex - The index of the question to display in the modal.
+ * @param {Array} questions - An array of question objects, each containing options and other details.
+ * @param {Array} userAnswers - An array of user-selected answer indices corresponding to each question.
+ */
+function showQAmodal(questionIndex, questions, userAnswers) {
+  const QADict = buildAnswerDict(questions, userAnswers);
+  const question = questions[questionIndex];
+  const [userAnswerIndex, correctIndex] = QADict[questionIndex];
+
+  // Attach indices for use in buildModalTabs
+  question.userAnswerIndex = userAnswerIndex;
+  question.correctIndex = correctIndex;
+
+  const modalBody = document.getElementById("modalQuestionBody");
+  modalBody.innerHTML = buildModalTabs(question);
+
+  const modalTitle = document.getElementById("questionModalLabel");
+  modalTitle.textContent = `Question N° ${question.id}`;
+}
+
 export {
   renderSubjectAccordion,
   TestQuestionsOptions,
@@ -313,5 +484,6 @@ export {
   showTestOptions,
   hideTestOptions,
   showQuestion,
-  renderNavigationContainer
+  renderNavigationContainer,
+  renderQACards,
 };
