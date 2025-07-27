@@ -23,4 +23,4 @@ function filterQuestionsByDatabase(questions, databaseKey) {
   );
 }
 
-export { filterQuestionsBySubtopics, filterQuestionsByDatabase };
+export { filterQuestionsBySubtopics, filterQuestionsByDatabase};
