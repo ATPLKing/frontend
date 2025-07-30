@@ -1,31 +1,45 @@
 import { renderQACards } from "./render.js";
 import { getAnswerPercentages, getAnswerScores } from "./utils/answer.js";
+import { displayTime } from "./utils/time.js";
 import { themeHandler } from "./theme.js";
 
-const questions = JSON.parse(localStorage.getItem("questions"));
-const storedAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+const testId = localStorage.getItem("current-test-id");
+const test = JSON.parse(localStorage.getItem(`test-${testId}`));
 
 function initializeApp() {
   themeHandler();
-  testResult(questions, storedAnswers);
-  renderQACards(questions, storedAnswers);
+  testResult(test);
+  renderQACards(test);
 }
 
 document.addEventListener("DOMContentLoaded", initializeApp);
 
-function testResult(questions, storedAnswers) {
+function testResult(test) {
+  let questions = test.questions;
+  let userAnswers = test.userAnswers;
+
+  // test informations display
   const bannerDiv = document.getElementsByClassName("result-banner")[0];
+  const uvSpan = document.getElementById("uv");
+  const dbSpan = document.getElementById("db");
+  const modeSpan = document.getElementById("mode");
+  const timeSpentSpan = document.getElementById("time-spent");
   const percentageSpan = document.getElementById("percentage");
   const correctQuestionsCountSpan = document.getElementById(
     "correct-answers-count"
   );
   const totalQuestionsCountSpan = document.getElementById("questions-count");
 
-  const testPercentage = getAnswerPercentages(questions, storedAnswers);
-  const testScore = getAnswerScores(questions, storedAnswers);
+  const testPercentage = getAnswerPercentages(questions, userAnswers);
+  const testScore = getAnswerScores(questions, userAnswers);
   const percentage = testPercentage[0];
 
   const bannerClass = percentage >= 75 ? "succeeded" : "failed";
+
+  uvSpan.innerText = test.uv;
+  dbSpan.innerText = test.database;
+  modeSpan.innerText = test.mode;
+  displayTime(timeSpentSpan, test.timeElapsed);
 
   percentageSpan.innerText = testPercentage[0];
   bannerDiv.classList.add(bannerClass);
