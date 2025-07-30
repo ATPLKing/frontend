@@ -321,12 +321,13 @@ function renderNavigationContainer(
  * the user's incorrect answer. Cards are styled based on the correctness of the
  * user's answer and are clickable to open a modal for detailed view.
  *
- * @param {Array} questions - An array of question objects, each containing an id,
- *                            question text, and options with a correct flag.
- * @param {Array} userAnswers - An array of user-selected answer indices corresponding
- *                              to each question.
+ * @param {Object} test - test dict containing questions and userAnswers
+ * 
  */
-function renderQACards(questions, userAnswers) {
+function renderQACards(test) {
+  const questions =  test.questions;
+  const userAnswers = test.userAnswers;
+
   const QADict = buildAnswerDict(questions, userAnswers);
 
   const answersCardsContainer = document.getElementById(
