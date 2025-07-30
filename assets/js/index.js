@@ -13,7 +13,10 @@ import {
   filterQuestionsByDatabase,
   filterQuestionsBySubtopics
 } from "./utils/question.js";
+import { generateID } from "./utils/helper.js";
 
+
+const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
 let selectedDatabase = null;
 let UVs = [];
 let selectedUV = null;
@@ -32,6 +35,7 @@ async function initializeApp() {
   // get UVs from api and fetch option in UV Select
   UVs = await getUVs();
   fillUVsOptions(UVs);
+
 
   // Listeners
   testBtnListener();
@@ -194,8 +198,6 @@ function startTestBtnListener() {
 
 function startTest() {
   
-  localStorage.clear();
-
   desiredQuestionsCount = document.getElementById("desired-questions-count").value;
 
  if (questionsCopy.length == 0) {
@@ -212,7 +214,31 @@ function startTest() {
   questionsCopy = shuffleArray(questionsCopy);
   questionsCopy.forEach(question => question.options = shuffleArray(question.options));
   finalTestQuestions = questionsCopy.slice(0, desiredQuestionsCount);
+
   
-  localStorage.setItem("questions", JSON.stringify(finalTestQuestions));
+
+  const testId = generateID();
+  // Find the selected UV object from the UVs array
+  const selectedUVObj = UVs.find(uv => uv.id === selectedUV);
+
+  const test = {
+    id: testId,
+    mode: 'TEST',
+    database: selectedDatabase == 'H' ? 'HELICOPTERE' : 'AVION',
+    uv: selectedUVObj ? `${selectedUVObj.id} - ${selectedUVObj.name}` : '',
+    createdAt: new Date().toISOString(),
+    questions: finalTestQuestions,
+    userAnswers: []
+  }
+
+  localStorage.setItem(`test-${testId}`, JSON.stringify(test));
+  localStorage.setItem("current-test-id", testId);
+
+
+  // update list of test ids
+  AllTests.testId = test;
+  localStorage.setItem("tests", JSON.stringify(AllTests));
+
+
   window.location.href = "quiz";
 }
