@@ -1,20 +1,26 @@
 import { themeHandler } from "./theme.js";
 import { clearClasses } from "./utils/helper.js";
 import { getAnswerIndices } from "./utils/answer.js";
+import { displayTime } from "./utils/time.js";
 import { showQuestion, renderNavigationContainer } from "./render.js";
 
-let questions = [];
-const storedAnswers = JSON.parse(localStorage.getItem("userAnswers"));
-let userAnswers = Array.isArray(storedAnswers) ? storedAnswers : [];
+const testId = localStorage.getItem("current-test-id");
+const test = JSON.parse(localStorage.getItem(`test-${testId}`));
+
+let timeElapsed = 0;
+
+let questions = test.questions;
+let userAnswers = test.userAnswers;
 let currentIndex = 0;
 
 function initializeApp() {
   // theme handling
   themeHandler();
 
-  loadQuestions();
   // show the first question (initialization)
   showQuestion(questions, currentIndex);
+  secondCounter();
+
   renderNavigationContainer(questions);
   validateQuestionNavButtons();
 
@@ -28,10 +34,6 @@ function initializeApp() {
 
 // When the document content loaded
 document.addEventListener("DOMContentLoaded", initializeApp);
-
-function loadQuestions() {
-  questions = JSON.parse(localStorage.getItem("questions"));
-}
 
 /**
  * Attaches a click event listener to the "next" button element.
@@ -101,7 +103,8 @@ function questionNavBtnListener() {
 
 function answerQuestion(Questionindex, optionIndex) {
   userAnswers[Questionindex] = optionIndex;
-  localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+  test.userAnswers = userAnswers;
+  localStorage.setItem(`test-${testId}`, JSON.stringify(test));
   validateAnswers();
   validateQuestionNavButtons();
 }
@@ -191,23 +194,41 @@ function validateQuestionNavButtons() {
   });
 }
 
-
 function endTestBtnListener() {
   document.getElementById("end-test").addEventListener("click", endTest);
 }
 
-
 function endTest() {
   if (userAnswers.length != questions.length) {
     const unanswered_questions = questions.length - userAnswers.length;
-    alertify.alert("Test incomplet", `Vous devez répondre à toutes les questions pour terminer le test ! Il vous reste ${unanswered_questions} questions sans réponse !`);
+    alertify.alert(
+      "Test incomplet",
+      `Vous devez répondre à toutes les questions pour terminer le test ! Il vous reste ${unanswered_questions} questions sans réponse !`
+    );
   } else {
-    alertify.confirm(`Êtes-vous sûr de vouloir terminer le test ?`)
-    .set('title', "Terminer le test")
-    .set('labels', {ok: 'OUI', cancel: 'NON'})
-    .set('onok', function() {
+    alertify
+      .confirm(`Êtes-vous sûr de vouloir terminer le test ?`)
+      .set("title", "Terminer le test")
+      .set("labels", { ok: "OUI", cancel: "NON" })
+      .set("onok", function () {
+        test.timeElapsed = timeElapsed;
+        localStorage.setItem(`test-${testId}`, JSON.stringify(test));
         window.location.href = "/result";
       })
-    .set('oncancel', function() {});
+      .set("oncancel", function () {});
   }
+}
+
+
+
+/**
+ * Increments the given timeElapsed variable every second.
+ *
+ */
+export function secondCounter() {
+  const timerSpan = document.getElementById("timer");
+  setInterval(() => {
+    timeElapsed++;
+    displayTime(timerSpan, timeElapsed);
+  }, 1000);
 }
