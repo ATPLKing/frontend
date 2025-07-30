@@ -7,3 +7,8 @@
 export function clearClasses(elements, ...classes) {
   elements.forEach(el => el.classList.remove(...classes));
 }
+
+
+export function generateID(){
+  return `id-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+}
