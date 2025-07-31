@@ -178,7 +178,7 @@ function onSubtopicsChange() {
 function getCheckedSubtopics() {
   const checkedSubtopics = Array.from(
     document.querySelectorAll(
-      '#subjectAccordion .accordion-body input[type="checkbox"]:checked'
+      '#subjectAccordion input[type="checkbox"]:checked'
     )
   ).map((input) => input.value);
   return checkedSubtopics;
