@@ -1,8 +1,33 @@
-<nav class="navbar px-3 d-flex flex-column flex-sm-row align-items-center justify-content-between text-center">
+<nav
+  class="navbar px-3 d-flex flex-column flex-sm-row align-items-center justify-content-between text-center"
+>
   <a class="navbar-brand d-flex align-items-center" href="/">
     <img src="/assets/images/logo.png" alt="ATPLKing" class="header-logo" />
   </a>
-  <div class="d-flex align-items-center justify-content-center gap-3 flex-shrink-0">
+  <div
+    class="d-flex align-items-center justify-content-center gap-3 flex-shrink-0"
+  >
+    <div class="dropdown">
+      <button
+        class="menu-btn"
+        type="button"
+        id="dropdownMenu"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <span
+          class="iconify"
+          data-icon="ic:baseline-menu"
+          data-width="20"
+          data-height="20"
+        ></span>
+      </button>
+
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+        <li><a class="dropdown-item d-flex justify-content-center" href="/historic"><span class="iconify mr-3 fs-4" data-icon="ix:disk-filled"></span> Historique de tests</a></li>
+      </ul>
+    </div>
+
     <button id="toggle-theme" class="theme-btn">
       <span
         id="theme-icon"
