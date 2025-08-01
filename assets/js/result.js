@@ -3,8 +3,9 @@ import { getAnswerPercentages, getAnswerScores } from "./utils/answer.js";
 import { displayTime } from "./utils/time.js";
 import { themeHandler } from "./theme.js";
 
+const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
 const testId = localStorage.getItem("current-test-id");
-const test = JSON.parse(localStorage.getItem(`test-${testId}`));
+const test = AllTests[testId];
 
 function initializeApp() {
   themeHandler();
@@ -33,6 +34,11 @@ function testResult(test) {
   const testPercentage = getAnswerPercentages(questions, userAnswers);
   const testScore = getAnswerScores(questions, userAnswers);
   const percentage = testPercentage[0];
+
+  // add the score to the test historic use
+  test.score = percentage;
+  AllTests[testId] = test;
+  localStorage.setItem("tests", JSON.stringify(AllTests));
 
   const bannerClass = percentage >= 75 ? "succeeded" : "failed";
 
