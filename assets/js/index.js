@@ -231,12 +231,11 @@ function startTest() {
     userAnswers: []
   }
 
-  localStorage.setItem(`test-${testId}`, JSON.stringify(test));
   localStorage.setItem("current-test-id", testId);
 
 
   // update list of test ids
-  AllTests.testId = test;
+  AllTests[testId] = test;
   localStorage.setItem("tests", JSON.stringify(AllTests));
 
 
