@@ -35,6 +35,16 @@ body {
     padding: 0 16px;
 }
 
+.navbar .menu-btn { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border-style: none;
+}
+
 .navbar .theme-btn, 
 .navbar .github-btn { 
   display: flex;
@@ -234,11 +244,56 @@ body {
   border-color: #ff5236 !important ;
 }
 
-
-
 /*** RESULT PAGE CSS ***/
 
+/*** HISTORIC PAGE CSS ***/
 
+.historic-table-box {
+  border-style: solid;
+  border-radius: 15px;
+  border-width: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+
+
+/*** HISTORIC PAGE CSS ***/
+.historic-table-box .action {
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 30px;
+  width: 30px;
+}
+
+.historic-table-box .action.delete {
+  background-color: #ff5c47;
+}
+
+.historic-table-box .action.result {
+  background-color: #59b368;
+}
+
+.historic-table-box .action.test {
+  background-color: #0ca797;
+}
+
+.historic-table-box .action.delete:hover {
+  background-color: #ff1e00;
+}
+
+.historic-table-box .action.result:hover {
+  background-color: #11b62c;
+}
+
+.historic-table-box .action.test:hover {
+  background-color: #06544c;
+}
+
+.dataTables_length , .dataTables_filter {
+  margin-bottom: 10px;
+}
 /**
 * ALERTIJY JS
 */
