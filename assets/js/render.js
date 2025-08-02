@@ -1,4 +1,5 @@
 import { buildAnswerDict } from "./utils/answer.js";
+import { formatSeconds, formatDateOnly } from './utils/time.js'
 
 /**
  * Renders an accordion UI component with subjects and their subtopics.
@@ -14,51 +15,53 @@ import { buildAnswerDict } from "./utils/answer.js";
 function renderSubjectAccordion(data) {
   const accordion = document.getElementById("subjectAccordion");
   accordion.innerHTML = "";
+
   data.forEach((subject, index) => {
-    const subjectId = `${subject.code}`;
+    const subjectId = `subject-${subject.code}`;
 
     const subtopicsHtml = subject.subtopics
       .map(
         (sub) => `
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <label class="form-check-label">
-            <input class="form-check-input me-2" id="${sub.code}" value="${sub.code}" type="checkbox" checked />
-            ${sub.code} - ${sub.name}
-          </label>
-          <span class="badge bg-secondary">${sub.count}</span>
-        </div>`
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-check-label">
+              <input class="form-check-input me-2" id="${sub.code}" value="${sub.code}" type="checkbox" checked />
+              ${sub.code} - ${sub.name}
+            </label>
+            <span class="badge bg-secondary">${sub.count}</span>
+          </div>`
       )
       .join("");
 
     const itemHtml = `
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#${subjectId}"
-          >
+      <div class="border rounded mb-2">
+        <div class="d-flex align-items-center justify-content-between p-2 subject-header" style="cursor: pointer;" data-target="#${subjectId}">
+          <div class="d-flex align-items-center">
             <input class="form-check-input me-2" id="${subject.code}" type="checkbox" checked />
             ${subject.code} ${subject.name}
-            <span class="ms-auto badge bg-secondary">${subject.total}</span>
-          </button>
-        </h2>
-        <div
-          id="${subjectId}"
-          class="accordion-collapse collapse"
-          data-bs-parent="#subjectAccordion"
-        >
-          <div class="accordion-body ps-5">
-            ${subtopicsHtml}
           </div>
+          <span class="badge bg-secondary">${subject.total}</span>
+        </div>
+        <div id="${subjectId}" class="subject-body px-4 py-2" style="display: none;">
+          ${subtopicsHtml}
         </div>
       </div>`;
 
     accordion.insertAdjacentHTML("beforeend", itemHtml);
   });
+
   setupAccordionCheckboxSync();
+
+  // Toggle logic
+  document.querySelectorAll(".subject-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      const targetId = header.getAttribute("data-target");
+      const target = document.querySelector(targetId);
+      target.style.display = target.style.display === "none" ? "block" : "none";
+    });
+  });
+
 }
+
 
 /**
  * fill the UV options in the UV select
@@ -104,10 +107,10 @@ function TestQuestionsOptions(questions) {
  */
 function setupAccordionCheckboxSync() {
   // Sync children to parent
-  document.querySelectorAll(".accordion-body").forEach((body) => {
-    const item = body.closest(".accordion-item");
-    const parentCheckbox = item.querySelector(
-      '.accordion-button input[type="checkbox"]'
+  document.querySelectorAll(".subject-body").forEach((body) => {
+    const container = body.closest(".border");
+    const parentCheckbox = container.querySelector(
+      '.subject-header input[type="checkbox"]'
     );
     const childCheckboxes = body.querySelectorAll('input[type="checkbox"]');
 
@@ -121,12 +124,12 @@ function setupAccordionCheckboxSync() {
 
   // Sync parent to children
   document
-    .querySelectorAll('.accordion-button input[type="checkbox"]')
+    .querySelectorAll('.subject-header input[type="checkbox"]')
     .forEach((parent) => {
       parent.addEventListener("change", function () {
-        const item = this.closest(".accordion-item");
-        const childCheckboxes = item.querySelectorAll(
-          '.accordion-body input[type="checkbox"]'
+        const container = this.closest(".border");
+        const childCheckboxes = container.querySelectorAll(
+          '.subject-body input[type="checkbox"]'
         );
         childCheckboxes.forEach((cb) => {
           cb.checked = this.checked;
@@ -134,7 +137,6 @@ function setupAccordionCheckboxSync() {
       });
     });
 }
-
 /**
  * Displays all elements with the class 'test-options' by removing the 'd-none' class.
  * This function selects all elements with the class 'test-options' and iterates over them,
@@ -478,6 +480,38 @@ function showQAmodal(questionIndex, questions, userAnswers) {
   modalTitle.textContent = `Question N° ${question.id}`;
 }
 
+
+function fillHistoricTableRows(tests) {
+  const testsArray = Object.values(tests)
+  const tbody = document.querySelector("#historic-table tbody");
+  tbody.innerHTML = "";
+  testsArray.forEach(test => {
+    const tr = document.createElement("tr");
+    tr.setAttribute("data-test-id", test.id);
+    tr.innerHTML = `
+      <td>${test.uv}</td>
+      <td class='text-center'>${test.database}</td>
+      <td class='text-center'>${test.questions.length}</td>
+      <td class='text-center'>${test.score ?  test.score + '%': '-'}</td>
+      <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(test.timeElapsed)}</td>
+      <td>
+        <div class="d-flex gap-1 justify-content-center">
+          <button class="action test d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="carbon:result"></span>
+          </button>
+          <button class="action result d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="fluent-mdl2:b-i-dashboard"></span>
+          </button>
+          <button class="action delete d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="material-symbols:delete"></span>
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 export {
   renderSubjectAccordion,
   TestQuestionsOptions,
@@ -487,4 +521,5 @@ export {
   showQuestion,
   renderNavigationContainer,
   renderQACards,
+  fillHistoricTableRows
 };

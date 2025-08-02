@@ -53,3 +53,15 @@ export function displayTime(timerSpan, timeElapsed) {
   let timeStr = formatSeconds(timeElapsed);
   timerSpan.innerText = timeStr;
 }
+
+
+
+/**
+ * Formats an ISO date string to return only the date part (YYYY-MM-DD).
+ * @param {string} isoString - The ISO 8601 date string to format.
+ * @returns {string} The date in YYYY-MM-DD format.
+ */
+export function formatDateOnly(isoString) {
+  const date = new Date(isoString);
+  return date.toISOString().split("T")[0];
+}

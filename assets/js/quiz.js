@@ -4,10 +4,11 @@ import { getAnswerIndices } from "./utils/answer.js";
 import { displayTime } from "./utils/time.js";
 import { showQuestion, renderNavigationContainer } from "./render.js";
 
+const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
 const testId = localStorage.getItem("current-test-id");
-const test = JSON.parse(localStorage.getItem(`test-${testId}`));
+const test = AllTests[testId];
 
-let timeElapsed = 0;
+let timeElapsed = test.timeElapsed || 0;
 
 let questions = test.questions;
 let userAnswers = test.userAnswers;
@@ -29,6 +30,7 @@ function initializeApp() {
   prevQuestionBtnListener();
   questionNavBtnListener();
   answersEventListener();
+  pauseTestBtnListener();
   endTestBtnListener();
 }
 
@@ -104,7 +106,8 @@ function questionNavBtnListener() {
 function answerQuestion(Questionindex, optionIndex) {
   userAnswers[Questionindex] = optionIndex;
   test.userAnswers = userAnswers;
-  localStorage.setItem(`test-${testId}`, JSON.stringify(test));
+  AllTests[testId] = test;
+  localStorage.setItem("tests", JSON.stringify(AllTests));
   validateAnswers();
   validateQuestionNavButtons();
 }
@@ -212,14 +215,33 @@ function endTest() {
       .set("labels", { ok: "OUI", cancel: "NON" })
       .set("onok", function () {
         test.timeElapsed = timeElapsed;
-        localStorage.setItem(`test-${testId}`, JSON.stringify(test));
+        test.saveAt = new Date().toISOString();
+        AllTests[testId] = test;
+        localStorage.setItem("tests", JSON.stringify(AllTests));
         window.location.href = "/result";
       })
       .set("oncancel", function () {});
   }
 }
 
+function pauseTestBtnListener() {
+  document.getElementById("pause-test").addEventListener("click", pauseTest);
+}
 
+function pauseTest() {
+  alertify
+    .confirm(`Êtes-vous sûr de vouloir terminer le test ?`)
+    .set("title", "Enregistrer le test")
+    .set("labels", { ok: "OUI", cancel: "NON" })
+    .set("onok", function () {
+      test.timeElapsed = timeElapsed;
+      test.saveAt = new Date().toISOString();
+      AllTests[testId] = test;
+      localStorage.setItem("tests", JSON.stringify(AllTests));
+      window.location.href = "/historic";
+    })
+    .set("oncancel", function () {});
+}
 
 /**
  * Increments the given timeElapsed variable every second.
