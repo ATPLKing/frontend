@@ -1,4 +1,5 @@
 import { buildAnswerDict } from "./utils/answer.js";
+import { formatSeconds, formatDateOnly } from './utils/time.js'
 
 /**
  * Renders an accordion UI component with subjects and their subtopics.
@@ -479,6 +480,38 @@ function showQAmodal(questionIndex, questions, userAnswers) {
   modalTitle.textContent = `Question N° ${question.id}`;
 }
 
+
+function fillHistoricTableRows(tests) {
+  const testsArray = Object.values(tests)
+  const tbody = document.querySelector("#historic-table tbody");
+  tbody.innerHTML = "";
+  testsArray.forEach(test => {
+    const tr = document.createElement("tr");
+    tr.setAttribute("data-test-id", test.id);
+    tr.innerHTML = `
+      <td>${test.uv}</td>
+      <td class='text-center'>${test.database}</td>
+      <td class='text-center'>${test.questions.length}</td>
+      <td class='text-center'>${test.score ?  test.score + '%': '-'}</td>
+      <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(test.timeElapsed)}</td>
+      <td>
+        <div class="d-flex gap-1 justify-content-center">
+          <button class="action test d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="carbon:result"></span>
+          </button>
+          <button class="action result d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="fluent-mdl2:b-i-dashboard"></span>
+          </button>
+          <button class="action delete d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="material-symbols:delete"></span>
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 export {
   renderSubjectAccordion,
   TestQuestionsOptions,
@@ -488,4 +521,5 @@ export {
   showQuestion,
   renderNavigationContainer,
   renderQACards,
+  fillHistoricTableRows
 };
