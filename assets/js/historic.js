@@ -12,7 +12,7 @@ function initializeApp() {
     $("#historic-table").DataTable({
       responsive: true,
       language: {
-        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json",
+        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json",
       },
     });
   });
