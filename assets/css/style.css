@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 /** Initial value **/
 :root {
   --bg-color: #ffffff;
@@ -5,6 +7,7 @@
   --border-color: rgb(94, 93, 93);
   --question-color-box: #ffffff;
   --question-nav-text-color: rgb(24, 41, 123);
+  --test-action-btn-color: #f0f0f0;
 }
 
 [data-theme="dark"] {
@@ -13,6 +16,7 @@
   --border-color: rgb(216, 213, 213);
   --question-color-box: #3a3a3a;
   --question-nav-text-color: rgb(0, 0, 0);
+  --test-action-btn-color: #3a3a3a;
 }
 
 
@@ -20,6 +24,10 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
 }
 
 /** HEADER FILES CSS **/
@@ -91,10 +99,14 @@ body {
   border-width: 1px;
   color: white;
   background-color: #0d2467;
+  font-weight: bolder;
 }
 
 .question-container {
-  padding: 50px;
+  padding-top: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
 }
 
 .question-container .action-bar .nav-btn {
@@ -126,6 +138,19 @@ body {
   padding: 50px;
 }
 
+.test-action-btn {
+  border: none;
+  border-radius: 5px;
+  padding: 7px;
+}
+
+.test-action-btn:hover {
+  background-color: rgb(25, 118, 210);
+  color: white;
+}
+
+
+
 .navigation-box {
   border-style: solid;
   border-width: 1px;
@@ -137,8 +162,11 @@ body {
 
 .question-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 10px; /* consistent spacing between items */
+  padding: 10px;
+  max-width: 100%; /* or 100% if full width desired */
+  margin: auto;
 }
 
 .question-nav {
