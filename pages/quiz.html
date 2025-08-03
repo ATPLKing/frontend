@@ -9,7 +9,7 @@ permalink: /quiz/
   <div class="row">
     <!-- Left: Question area -->
     <div class="question-container col-lg-9">
-      <h3 id="quizz-title" class="mb-3 text-center"></h3>
+      <h4 id="test-title" class="mb-3 text-center"></h4>
       <div
         class="action-bar mb-5 d-flex justify-content-between align-items-center mb-2"
       >
@@ -50,7 +50,7 @@ permalink: /quiz/
             aria-controls="question"
             aria-selected="true"
           >
-            <span class="iconify mr-2" data-icon="zondicons:question"></span>
+            <span class="iconify me-2" data-icon="zondicons:question"></span>
             Question
           </button>
         </li>
@@ -74,7 +74,7 @@ permalink: /quiz/
       <!-- Tabs Content -->
       <div class="tab-content border border-top-0 p-3" id="questionTabContent">
         <div
-          class="tab-pane fade show active"
+          class="tab-pane fade show active p-3"
           id="question-tab"
           role="tabpanel"
           aria-labelledby="question-tab"
@@ -85,7 +85,7 @@ permalink: /quiz/
           <div id="answer-options-container"></div>
         </div>
         <div
-          class="tab-pane fade"
+          class="tab-pane fade p-3"
           id="explanation-tab"
           role="tabpanel"
           aria-labelledby="explanation-tab"
@@ -98,10 +98,10 @@ permalink: /quiz/
     <!-- Right: Navigation grid -->
     <div class="nav-container col-lg-3">
       <div class="sticky-top" style="top: 20px">
-        <button class="btn btn-secondary w-100 mb-3 bg-hover-primary" id="pause-test">
+        <button class="test-action-btn w-100 mb-3" id="pause-test">
           Enregistrer
         </button>
-        <button class="btn btn-secondary w-100 mb-3" id="end-test">Terminer</button>
+        <button class="test-action-btn w-100 mb-3" id="end-test">Terminer</button>
         <div class="navigation-box">
           <div class="question-grid p-2"></div>
 

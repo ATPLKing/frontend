@@ -2,7 +2,7 @@ import { themeHandler } from "./theme.js";
 import { clearClasses } from "./utils/helper.js";
 import { getAnswerIndices } from "./utils/answer.js";
 import { displayTime } from "./utils/time.js";
-import { showQuestion, renderNavigationContainer } from "./render.js";
+import { displayTestTitle, showQuestion, renderNavigationContainer } from "./render.js";
 
 const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
 const testId = localStorage.getItem("current-test-id");
@@ -19,6 +19,7 @@ function initializeApp() {
   themeHandler();
 
   // show the first question (initialization)
+  displayTestTitle(test);
   showQuestion(questions, currentIndex);
   secondCounter();
 
@@ -103,6 +104,12 @@ function questionNavBtnListener() {
   });
 }
 
+/**
+ * Stores the user's selected answer for a question, persists the change
+ * to localStorage, and updates the UI to validate the answer.
+ * @param {number} Questionindex The index of the question being answered.
+ * @param {number} optionIndex The index of the selected answer option.
+ */
 function answerQuestion(Questionindex, optionIndex) {
   userAnswers[Questionindex] = optionIndex;
   test.userAnswers = userAnswers;
@@ -197,10 +204,25 @@ function validateQuestionNavButtons() {
   });
 }
 
+
+
+/**
+ * Adds a click event listener to the "end-test" button,
+ * which triggers the endTest function when clicked.
+ */
 function endTestBtnListener() {
   document.getElementById("end-test").addEventListener("click", endTest);
 }
 
+
+/**
+ * Handles the test completion process.
+ *
+ * Verifies if all questions have been answered. If not, it alerts the user
+ * with the number of unanswered questions. Otherwise, it prompts the user
+ * for confirmation. If confirmed, it saves the test data, including elapsed
+ * time, to localStorage and redirects to the result page.
+ */
 function endTest() {
   if (userAnswers.length != questions.length) {
     const unanswered_questions = questions.length - userAnswers.length;
@@ -224,10 +246,20 @@ function endTest() {
   }
 }
 
+/**
+ * Adds a click event listener to the "pause-test" button,
+ * which triggers the pauseTest function when clicked.
+ */
 function pauseTestBtnListener() {
   document.getElementById("pause-test").addEventListener("click", pauseTest);
 }
 
+
+/**
+ * Prompts the user to confirm ending the test.
+ * If confirmed, saves the current test's progress, including the time elapsed,
+ * to local storage and redirects the user to the historic page.
+ */
 function pauseTest() {
   alertify
     .confirm(`Êtes-vous sûr de vouloir terminer le test ?`)
@@ -243,14 +275,21 @@ function pauseTest() {
     .set("oncancel", function () {});
 }
 
+
 /**
  * Increments the given timeElapsed variable every second.
- *
+ * Save elapsed time each 30s to make the timer closer on page refresh
  */
-export function secondCounter() {
+function secondCounter() {
   const timerSpan = document.getElementById("timer");
   setInterval(() => {
     timeElapsed++;
+    test.timeElapsed = timeElapsed;
     displayTime(timerSpan, timeElapsed);
   }, 1000);
+
+  setInterval(() => {
+    AllTests[test.id] = test;
+    localStorage.setItem("tests", JSON.stringify(AllTests));
+  }, 30000);
 }

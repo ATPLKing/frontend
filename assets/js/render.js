@@ -158,6 +158,14 @@ function hideTestOptions() {
 }
 
 /**
+ * display the test title on quiz page
+ */
+function displayTestTitle(test) {
+  const title = document.getElementById("test-title");
+  title.innerText = test.uv;
+}
+
+/**
  * Displays a question and its answer options on the UI.
  *
  * This function updates the DOM elements to show the current question
@@ -518,6 +526,7 @@ export {
   fillUVsOptions,
   showTestOptions,
   hideTestOptions,
+  displayTestTitle,
   showQuestion,
   renderNavigationContainer,
   renderQACards,
