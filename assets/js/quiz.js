@@ -2,11 +2,14 @@ import { themeHandler } from "./theme.js";
 import { clearClasses } from "./utils/helper.js";
 import { getAnswerIndices } from "./utils/answer.js";
 import { displayTime } from "./utils/time.js";
-import { displayTestTitle, showQuestion, renderNavigationContainer } from "./render.js";
+import {
+  displayTestTitle,
+  showQuestion,
+  renderNavigationContainer,
+} from "./render.js";
+import { getCurrentTest, saveTest } from "./utils/test.js";
 
-const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
-const testId = localStorage.getItem("current-test-id");
-const test = AllTests[testId];
+const test = getCurrentTest();
 
 let timeElapsed = test.timeElapsed || 0;
 
@@ -113,8 +116,7 @@ function questionNavBtnListener() {
 function answerQuestion(Questionindex, optionIndex) {
   userAnswers[Questionindex] = optionIndex;
   test.userAnswers = userAnswers;
-  AllTests[testId] = test;
-  localStorage.setItem("tests", JSON.stringify(AllTests));
+  saveTest(test);
   validateAnswers();
   validateQuestionNavButtons();
 }
@@ -204,8 +206,6 @@ function validateQuestionNavButtons() {
   });
 }
 
-
-
 /**
  * Adds a click event listener to the "end-test" button,
  * which triggers the endTest function when clicked.
@@ -213,7 +213,6 @@ function validateQuestionNavButtons() {
 function endTestBtnListener() {
   document.getElementById("end-test").addEventListener("click", endTest);
 }
-
 
 /**
  * Handles the test completion process.
@@ -238,8 +237,7 @@ function endTest() {
       .set("onok", function () {
         test.timeElapsed = timeElapsed;
         test.saveAt = new Date().toISOString();
-        AllTests[testId] = test;
-        localStorage.setItem("tests", JSON.stringify(AllTests));
+        saveTest(test)
         window.location.href = "/result";
       })
       .set("oncancel", function () {});
@@ -254,7 +252,6 @@ function pauseTestBtnListener() {
   document.getElementById("pause-test").addEventListener("click", pauseTest);
 }
 
-
 /**
  * Prompts the user to confirm ending the test.
  * If confirmed, saves the current test's progress, including the time elapsed,
@@ -268,13 +265,11 @@ function pauseTest() {
     .set("onok", function () {
       test.timeElapsed = timeElapsed;
       test.saveAt = new Date().toISOString();
-      AllTests[testId] = test;
-      localStorage.setItem("tests", JSON.stringify(AllTests));
+      saveTest(test);
       window.location.href = "/historic";
     })
     .set("oncancel", function () {});
 }
-
 
 /**
  * Increments the given timeElapsed variable every second.
@@ -289,7 +284,6 @@ function secondCounter() {
   }, 1000);
 
   setInterval(() => {
-    AllTests[test.id] = test;
-    localStorage.setItem("tests", JSON.stringify(AllTests));
+    saveTest(test);
   }, 30000);
 }

@@ -504,6 +504,9 @@ function fillHistoricTableRows(tests) {
       <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(test.timeElapsed)}</td>
       <td>
         <div class="d-flex gap-1 justify-content-center">
+          <button class="action retest d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="ic:outline-loop"></span>
+          </button>
           <button class="action test d-flex align-items-center justify-content-center">
             <span class="iconify fs-4" data-icon="carbon:result"></span>
           </button>

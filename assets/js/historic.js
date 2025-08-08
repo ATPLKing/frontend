@@ -1,11 +1,12 @@
 import { themeHandler } from "./theme.js";
 import { fillHistoricTableRows } from "./render.js";
+import { loadSavedTests } from "./utils/test.js";
 
-const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
+const savedTests = loadSavedTests();
 
 function initializeApp() {
   themeHandler();
-  fillHistoricTableRows(AllTests);
+  fillHistoricTableRows(savedTests);
   setupHistoricTableActions();
 
   $(document).ready(function () {
