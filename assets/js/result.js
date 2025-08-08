@@ -2,10 +2,10 @@ import { renderQACards } from "./render.js";
 import { getAnswerPercentages, getAnswerScores } from "./utils/answer.js";
 import { displayTime } from "./utils/time.js";
 import { themeHandler } from "./theme.js";
+import { getCurrentTest, saveTest } from "./utils/test.js";
 
-const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
-const testId = localStorage.getItem("current-test-id");
-const test = AllTests[testId];
+
+const test = getCurrentTest();
 
 function initializeApp() {
   themeHandler();
@@ -37,8 +37,7 @@ function testResult(test) {
 
   // add the score to the test historic use
   test.score = percentage;
-  AllTests[testId] = test;
-  localStorage.setItem("tests", JSON.stringify(AllTests));
+  saveTest(test);
 
   const bannerClass = percentage >= 75 ? "succeeded" : "failed";
 

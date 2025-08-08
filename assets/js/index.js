@@ -11,12 +11,17 @@ import { shuffleArray } from "./utils/array.js";
 import { countQuestionsPerSubject } from "./utils/stats.js";
 import {
   filterQuestionsByDatabase,
-  filterQuestionsBySubtopics
+  filterQuestionsBySubtopics,
 } from "./utils/question.js";
-import { generateID } from "./utils/helper.js";
+import {
+  loadSavedTests,
+  saveTest,
+  startTest,
+  createTest,
+} from "./utils/test.js";
 
+const savedTests = loadSavedTests();
 
-const AllTests = JSON.parse(localStorage.getItem("tests") || "{}");
 let selectedDatabase = null;
 let UVs = [];
 let selectedUV = null;
@@ -36,7 +41,6 @@ async function initializeApp() {
   UVs = await getUVs();
   fillUVsOptions(UVs);
 
-
   // Listeners
   testBtnListener();
   UVChangeListener();
@@ -48,8 +52,6 @@ async function initializeApp() {
 // When the document content loaded
 document.addEventListener("DOMContentLoaded", initializeApp);
 
-
-
 /**
  * Adds a click event listener to the "test-btn" element.
  * When clicked, it retrieves the selected UV from the "uv-select" element.
@@ -60,7 +62,7 @@ function testBtnListener() {
   document.getElementById("test-btn").addEventListener("click", () => {
     selectedUV = document.getElementById("uv-select").value;
     if (!selectedUV) {
-      alertify.warning("Veuillez sélectionner une UV");
+      alertify.warning("Veuillez sélectionner une UV !");
       return;
     }
     onUVChange({ target: { value: selectedUV } });
@@ -184,60 +186,53 @@ function getCheckedSubtopics() {
   return checkedSubtopics;
 }
 
-
 /**
  * Attaches a click event listener to the "start-btn" element.
  * When the button is clicked, the `startTest` function is triggered.
  */
 function startTestBtnListener() {
-  document.getElementById("start-btn").addEventListener("click", startTest);
+  document
+    .getElementById("start-btn")
+    .addEventListener("click", initializeTest);
 }
 
+function initializeTest() {
+  desiredQuestionsCount = document.getElementById(
+    "desired-questions-count"
+  ).value;
 
-
-
-function startTest() {
-  
-  desiredQuestionsCount = document.getElementById("desired-questions-count").value;
-
- if (questionsCopy.length == 0) {
-    alertify.warning("La sélection de question ne contient aucune question.");
+  if (questionsCopy.length == 0) {
+    alertify.warning("La sélection de questions ne contient aucune question.");
     return;
-  };
+  }
 
-  if (desiredQuestionsCount <= 0 || desiredQuestionsCount > questionsCopy.length) {
-    alertify.warning(`Entrez un nombre de questions compris entre 1 et ${questionsCopy.length}.`)
+  if (
+    desiredQuestionsCount <= 0 ||
+    desiredQuestionsCount > questionsCopy.length
+  ) {
+    alertify.warning(
+      `Entrez un nombre de questions compris entre 1 et ${questionsCopy.length}.`
+    );
     return;
   }
 
   // shuffle questions and options
   questionsCopy = shuffleArray(questionsCopy);
-  questionsCopy.forEach(question => question.options = shuffleArray(question.options));
+  questionsCopy.forEach(
+    (question) => (question.options = shuffleArray(question.options))
+  );
   finalTestQuestions = questionsCopy.slice(0, desiredQuestionsCount);
 
-  
+  const selectedUVObj = UVs.find((uv) => uv.id === selectedUV);
 
-  const testId = generateID();
-  // Find the selected UV object from the UVs array
-  const selectedUVObj = UVs.find(uv => uv.id === selectedUV);
-
-  const test = {
-    id: testId,
-    mode: 'TEST',
-    database: selectedDatabase == 'H' ? 'HELICOPTERE' : 'AVION',
-    uv: selectedUVObj ? `${selectedUVObj.id} - ${selectedUVObj.name}` : '',
-    createdAt: new Date().toISOString(),
+  const params = {
+    mode: "TEST",
+    database: selectedDatabase,
+    uvObj: selectedUVObj,
     questions: finalTestQuestions,
-    userAnswers: []
-  }
+  };
 
-  localStorage.setItem("current-test-id", testId);
-
-
-  // update list of test ids
-  AllTests[testId] = test;
-  localStorage.setItem("tests", JSON.stringify(AllTests));
-
-
-  window.location.href = "quiz";
+  const test = createTest(params);
+  saveTest(test);
+  startTest(test);
 }
