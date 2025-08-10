@@ -46,6 +46,7 @@ export function createTest(params) {
     test.createdAt = new Date().toISOString(),
     test.questions = params.questions,
     test.userAnswers = [];
+    test.params = params;
     
     return test;
 }
