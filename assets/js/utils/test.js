@@ -20,6 +20,13 @@ export function saveTest(test){
 }
 
 
+export function deleteTest(test){
+    const savedTests = loadSavedTests()
+    delete savedTests[test.id];
+    localStorage.setItem("savedTests", JSON.stringify(savedTests));
+}
+
+
 /**
  * Creates a new test object from the given parameters.
  * @param {object} params - The parameters to create the test with.
