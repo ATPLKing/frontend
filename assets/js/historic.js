@@ -1,6 +1,6 @@
 import { themeHandler } from "./theme.js";
 import { fillHistoricTableRows } from "./render.js";
-import { loadSavedTests } from "./utils/test.js";
+import { loadSavedTests , deleteTest } from "./utils/test.js";
 
 const savedTests = loadSavedTests();
 
@@ -41,7 +41,7 @@ function setupHistoricTableActions() {
 }
 
 function handleShowTestResult(testId) {
-  const test = AllTests[testId];
+  const test = savedTests[testId];
   if (test.questions.length != test.userAnswers.length) {
     alertify.alert(
       "Test incomplet",
@@ -65,9 +65,13 @@ function handleDeleteTest(testId) {
     .set("title", "Supprimer le test")
     .set("labels", { ok: "OUI", cancel: "NON" })
     .set("onok", function () {
-      delete AllTests[testId];
-      localStorage.setItem("tests", JSON.stringify(AllTests));
-      window.location.href = "/historic";
+      const test = savedTests[testId];
+      deleteTest(test)
+      alertify.success("Test supprimé");
+
+      setTimeout(() => {
+        window.location.href = "/historic";
+      }, 2000);
     })
     .set("oncancel", function () {});
 }
