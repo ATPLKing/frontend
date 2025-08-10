@@ -1,5 +1,5 @@
 import { buildAnswerDict } from "./utils/answer.js";
-import { formatSeconds, formatDateOnly } from './utils/time.js'
+import { formatSeconds, formatDateOnly } from "./utils/time.js";
 
 /**
  * Renders an accordion UI component with subjects and their subtopics.
@@ -59,9 +59,7 @@ function renderSubjectAccordion(data) {
       target.style.display = target.style.display === "none" ? "block" : "none";
     });
   });
-
 }
-
 
 /**
  * fill the UV options in the UV select
@@ -324,7 +322,6 @@ function renderNavigationContainer(
   paginationContainer.appendChild(nextPageItem);
 }
 
-
 /**
  * Renders a series of question and answer cards within the specified container.
  * Each card displays the question text, the correct answer, and, if applicable,
@@ -332,10 +329,10 @@ function renderNavigationContainer(
  * user's answer and are clickable to open a modal for detailed view.
  *
  * @param {Object} test - test dict containing questions and userAnswers
- * 
+ *
  */
 function renderQACards(test) {
-  const questions =  test.questions;
+  const questions = test.questions;
   const userAnswers = test.userAnswers;
 
   const QADict = buildAnswerDict(questions, userAnswers);
@@ -386,7 +383,6 @@ function renderQACards(test) {
     });
   });
 }
-
 
 /**
  * Builds HTML for modal tabs displaying a question and its options, with an optional explanation tab.
@@ -459,7 +455,6 @@ function buildModalTabs(question) {
   return navTabs + tabContent;
 }
 
-
 /**
  * Displays a modal with the question and answer details for a given question index.
  *
@@ -488,26 +483,36 @@ function showQAmodal(questionIndex, questions, userAnswers) {
   modalTitle.textContent = `Question N° ${question.id}`;
 }
 
-
 function fillHistoricTableRows(tests) {
-  const testsArray = Object.values(tests)
+  const testsArray = Object.values(tests);
   const tbody = document.querySelector("#historic-table tbody");
   tbody.innerHTML = "";
-  testsArray.forEach(test => {
+  testsArray.forEach((test) => {
     const tr = document.createElement("tr");
     tr.setAttribute("data-test-id", test.id);
     tr.innerHTML = `
       <td>${test.uv}</td>
-      <td class='text-center'>${test.database}</td>
+      <td class='text-center'>
+          <span class="database d-inline-flex align-items-center justify-content-center ${
+            test.database == "HELICOPTERE" ? "helicopter" : "airplane"
+          } d-flex align-items-center justify-content-center">
+            <span class="iconify fs-4" data-icon="${
+              test.database == "HELICOPTERE"
+                ? "game-icons:helicopter-tail"
+                : "hugeicons:plane"
+            }"></span>
+          </span></td>
       <td class='text-center'>${test.questions.length}</td>
-      <td class='text-center'>${test.score ?  test.score + '%': '-'}</td>
-      <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(test.timeElapsed)}</td>
+      <td class='text-center'>${test.score ? test.score + "%" : "-"}</td>
+      <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(
+      test.timeElapsed
+    )}</td>
       <td>
         <div class="d-flex gap-1 justify-content-center">
           <button class="action retest d-flex align-items-center justify-content-center">
             <span class="iconify fs-4" data-icon="ic:outline-loop"></span>
           </button>
-          <button class="action test d-flex align-items-center justify-content-center">
+          <button class="action test d-flex align-items-center justify-content-center"> 
             <span class="iconify fs-4" data-icon="carbon:result"></span>
           </button>
           <button class="action result d-flex align-items-center justify-content-center">
@@ -533,5 +538,5 @@ export {
   showQuestion,
   renderNavigationContainer,
   renderQACards,
-  fillHistoricTableRows
+  fillHistoricTableRows,
 };
