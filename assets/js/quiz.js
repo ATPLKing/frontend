@@ -24,7 +24,7 @@ function initializeApp() {
   // show the first question (initialization)
   displayTestTitle(test);
   showQuestion(questions, currentIndex);
-  secondCounter();
+  timeHandler();
 
   renderNavigationContainer(questions);
   validateQuestionNavButtons();
@@ -237,7 +237,7 @@ function endTest() {
       .set("onok", function () {
         test.timeElapsed = timeElapsed;
         test.saveAt = new Date().toISOString();
-        saveTest(test)
+        saveTest(test);
         window.location.href = "/result";
       })
       .set("oncancel", function () {});
@@ -275,15 +275,19 @@ function pauseTest() {
  * Increments the given timeElapsed variable every second.
  * Save elapsed time each 30s to make the timer closer on page refresh
  */
-function secondCounter() {
+function timeHandler() {
   const timerSpan = document.getElementById("timer");
-  setInterval(() => {
-    timeElapsed++;
-    test.timeElapsed = timeElapsed;
-    displayTime(timerSpan, timeElapsed);
-  }, 1000);
+  if (!test.score) {
+    setInterval(() => {
+      timeElapsed++;
+      test.timeElapsed = timeElapsed;
+      displayTime(timerSpan, timeElapsed);
+    }, 1000);
 
-  setInterval(() => {
-    saveTest(test);
-  }, 30000);
+    setInterval(() => {
+      saveTest(test);
+    }, 30000);
+  } else {
+    displayTime(timerSpan, test.timeElapsed);
+  }
 }
