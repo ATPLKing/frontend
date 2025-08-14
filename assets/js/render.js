@@ -1,5 +1,6 @@
 import { buildAnswerDict } from "./utils/answer.js";
 import { formatSeconds, formatDateOnly } from "./utils/time.js";
+import { findNote } from "./utils/note.js";
 
 /**
  * Renders an accordion UI component with subjects and their subtopics.
@@ -177,12 +178,23 @@ function displayTestTitle(test) {
 function showQuestion(questions, index) {
   const questionIDSpan = document.getElementById("question-id");
   const questionContainer = document.getElementById("question-container");
+  const noteTextarea = document.getElementById("personal-note");
   const answerOptionsContainer = document.getElementById(
     "answer-options-container"
   );
 
+  const questionTabBtn = document.getElementById("question-btn");
+  const questionTabContainer = document.getElementById("question-tab");
   const explanationTabBtn = document.getElementById("explanation-btn");
   const explanationContainer = document.getElementById("explanation-container");
+
+  // resetting classes over links and panes
+  document.querySelectorAll('.nav-link').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+  // set question tab first when showing questions
+  questionTabBtn.classList.add("active");
+  questionTabContainer.classList.add("show", "active");
 
   if (questions[index]) {
     const questionDict = questions[index];
@@ -201,6 +213,8 @@ function showQuestion(questions, index) {
     // clean previous elements
     questionContainer.innerHTML = "";
     answerOptionsContainer.innerHTML = "";
+
+    noteTextarea.value = findNote(questionDict.id);
 
     questionContainer.innerHTML = questionDict.question;
     questionDict.options.forEach((option, i) => {
