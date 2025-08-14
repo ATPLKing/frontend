@@ -8,6 +8,7 @@ import {
   renderNavigationContainer,
 } from "./render.js";
 import { getCurrentTest, saveTest } from "./utils/test.js";
+import { findNote, saveNote, deleteNote } from "./utils/note.js";
 
 const test = getCurrentTest();
 
@@ -29,7 +30,17 @@ function initializeApp() {
   renderNavigationContainer(questions);
   validateQuestionNavButtons();
 
-  // event listeners;
+  eventListeners();
+}
+
+// When the document content loaded
+document.addEventListener("DOMContentLoaded", initializeApp);
+
+/**
+ * Initializes all event listeners for the quiz interface.
+ */
+function eventListeners() {
+  saveNoteBtnEventListener();
   nextQuestionBtnListener();
   prevQuestionBtnListener();
   questionNavBtnListener();
@@ -37,9 +48,6 @@ function initializeApp() {
   pauseTestBtnListener();
   endTestBtnListener();
 }
-
-// When the document content loaded
-document.addEventListener("DOMContentLoaded", initializeApp);
 
 /**
  * Attaches a click event listener to the "next" button element.
@@ -139,6 +147,29 @@ function answersEventListener() {
     const selectedOptionIndex = answerEl.dataset.optionIndex;
     if (selectedOptionIndex === undefined) return;
     answerQuestion(currentIndex, selectedOptionIndex);
+  });
+}
+
+/**
+ * Adds an event listener to the 'Save Note' button.
+ *
+ * On click, it saves the text from the personal note area for the
+ * current question and displays a success notification.
+ */
+function saveNoteBtnEventListener() {
+  const noteTextarea = document.getElementById("personal-note");
+  const noteSaveBtn = document.getElementById("note-save-btn");
+  if (!noteTextarea || !noteSaveBtn) return;
+  noteSaveBtn.addEventListener("click", function () {
+    const questionID = questions[currentIndex].id;
+    const note = noteTextarea.value.trim();
+    if (note) {
+      saveNote(questionID, note);
+      alertify.success("Note enregistrée");
+    } else {
+      deleteNote(questionID);
+      alertify.success("Note supprimée");
+    }
   });
 }
 
