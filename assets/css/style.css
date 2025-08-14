@@ -102,6 +102,25 @@ body {
   font-weight: bolder;
 }
 
+.quiz-config-box #desired-questions-count {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #0474C4 ; 
+
+  border-radius: 2px;
+  text-align: center;
+}
+
+.quiz-config-box #desired-questions-count:focus{
+  border-color: #0d2467 ;
+}
+
+
+/*** CONFIG PAGE CSS END ***/
+
+
+/*** QUIZZ PAGE CSS ***/
+
 .question-container {
   padding-top: 30px;
   padding-left: 50px;
@@ -237,7 +256,8 @@ body {
   font-weight: bold;
 }
 
-/*** CONFIG PAGE CSS END ***/
+/*** QUIZZ PAGE END  CSS ***/
+
 
 /*** RESULT PAGE CSS ***/
 .result-banner.succeeded {
