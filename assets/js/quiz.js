@@ -8,6 +8,7 @@ import {
   renderNavigationContainer,
 } from "./render.js";
 import { getCurrentTest, saveTest } from "./utils/test.js";
+import { findNote, saveNote, deleteNote } from "./utils/note.js";
 
 const test = getCurrentTest();
 
@@ -24,12 +25,22 @@ function initializeApp() {
   // show the first question (initialization)
   displayTestTitle(test);
   showQuestion(questions, currentIndex);
-  secondCounter();
+  timeHandler();
 
   renderNavigationContainer(questions);
   validateQuestionNavButtons();
 
-  // event listeners;
+  eventListeners();
+}
+
+// When the document content loaded
+document.addEventListener("DOMContentLoaded", initializeApp);
+
+/**
+ * Initializes all event listeners for the quiz interface.
+ */
+function eventListeners() {
+  saveNoteBtnEventListener();
   nextQuestionBtnListener();
   prevQuestionBtnListener();
   questionNavBtnListener();
@@ -37,9 +48,6 @@ function initializeApp() {
   pauseTestBtnListener();
   endTestBtnListener();
 }
-
-// When the document content loaded
-document.addEventListener("DOMContentLoaded", initializeApp);
 
 /**
  * Attaches a click event listener to the "next" button element.
@@ -143,6 +151,29 @@ function answersEventListener() {
 }
 
 /**
+ * Adds an event listener to the 'Save Note' button.
+ *
+ * On click, it saves the text from the personal note area for the
+ * current question and displays a success notification.
+ */
+function saveNoteBtnEventListener() {
+  const noteTextarea = document.getElementById("personal-note");
+  const noteSaveBtn = document.getElementById("note-save-btn");
+  if (!noteTextarea || !noteSaveBtn) return;
+  noteSaveBtn.addEventListener("click", function () {
+    const questionID = questions[currentIndex].id;
+    const note = noteTextarea.value.trim();
+    if (note) {
+      saveNote(questionID, note);
+      alertify.success("Note enregistrée");
+    } else {
+      deleteNote(questionID);
+      alertify.success("Note supprimée");
+    }
+  });
+}
+
+/**
  * Validates the user's answer for the current question by comparing it with the correct answer.
  * Highlights the correct and incorrect options in the answer options container.
  *
@@ -237,7 +268,7 @@ function endTest() {
       .set("onok", function () {
         test.timeElapsed = timeElapsed;
         test.saveAt = new Date().toISOString();
-        saveTest(test)
+        saveTest(test);
         window.location.href = "/result";
       })
       .set("oncancel", function () {});
@@ -275,15 +306,19 @@ function pauseTest() {
  * Increments the given timeElapsed variable every second.
  * Save elapsed time each 30s to make the timer closer on page refresh
  */
-function secondCounter() {
+function timeHandler() {
   const timerSpan = document.getElementById("timer");
-  setInterval(() => {
-    timeElapsed++;
-    test.timeElapsed = timeElapsed;
-    displayTime(timerSpan, timeElapsed);
-  }, 1000);
+  if (!test.score) {
+    setInterval(() => {
+      timeElapsed++;
+      test.timeElapsed = timeElapsed;
+      displayTime(timerSpan, timeElapsed);
+    }, 1000);
 
-  setInterval(() => {
-    saveTest(test);
-  }, 30000);
+    setInterval(() => {
+      saveTest(test);
+    }, 30000);
+  } else {
+    displayTime(timerSpan, test.timeElapsed);
+  }
 }
