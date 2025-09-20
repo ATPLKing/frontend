@@ -524,7 +524,7 @@ function fillHistoricTableRows(tests) {
           </span></td>
       <td class='text-center'>${test.questions.length}</td>
       <td class='text-center'>${test.score ? test.score + "%" : "-"}</td>
-      <td class='text-center'>${formatDateOnly(test.saveAt)} | ${formatSeconds(
+      <td class='text-center'>${formatDateOnly(test.savedAt)} | ${formatSeconds(
       test.timeElapsed
     )}</td>
       <td>

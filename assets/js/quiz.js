@@ -267,7 +267,7 @@ function endTest() {
       .set("labels", { ok: "OUI", cancel: "NON" })
       .set("onok", function () {
         test.timeElapsed = timeElapsed;
-        test.saveAt = new Date().toISOString();
+        test.savedAt = new Date().toISOString();
         saveTest(test);
         window.location.href = "/result";
       })
@@ -295,7 +295,7 @@ function pauseTest() {
     .set("labels", { ok: "OUI", cancel: "NON" })
     .set("onok", function () {
       test.timeElapsed = timeElapsed;
-      test.saveAt = new Date().toISOString();
+      test.savedAt = new Date().toISOString();
       saveTest(test);
       window.location.href = "/historic";
     })

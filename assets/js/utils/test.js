@@ -44,6 +44,8 @@ export function createTest(params) {
     test.database = params.database == "H" ? "HELICOPTERE" : "AVION";
     test.uv = params.uvObj ? `${params.uvObj.id} - ${params.uvObj.name}` : '';
     test.createdAt = new Date().toISOString(),
+    test.savedAt = new Date().toISOString(),
+    test.timeElapsed = 0,
     test.questions = params.questions,
     test.userAnswers = [];
     test.params = params;
