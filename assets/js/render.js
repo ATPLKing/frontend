@@ -179,6 +179,7 @@ function showQuestion(questions, index) {
   const questionIDSpan = document.getElementById("question-id");
   const questionContainer = document.getElementById("question-container");
   const noteTextarea = document.getElementById("personal-note");
+  const noteVisualSignSpan = document.getElementById("note-visual-sign");
   const answerOptionsContainer = document.getElementById(
     "answer-options-container"
   );
@@ -189,8 +190,12 @@ function showQuestion(questions, index) {
   const explanationContainer = document.getElementById("explanation-container");
 
   // resetting classes over links and panes
-  document.querySelectorAll('.nav-link').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((tab) => tab.classList.remove("active"));
+  document
+    .querySelectorAll(".tab-pane")
+    .forEach((pane) => pane.classList.remove("show", "active"));
 
   // set question tab first when showing questions
   questionTabBtn.classList.add("active");
@@ -215,6 +220,7 @@ function showQuestion(questions, index) {
     answerOptionsContainer.innerHTML = "";
 
     noteTextarea.value = findNote(questionDict.id);
+    noteVisualSignSpan.classList.toggle("d-none", findNote(questionDict.id) == "");
 
     questionContainer.innerHTML = questionDict.question;
     questionDict.options.forEach((option, i) => {
