@@ -1,138 +1,17 @@
----
-layout: default
-title: Home
-permalink: /
----
-
-<div class="container-fluid mt-5 mb-5">
-  <div class="row">
-    <div class="col-lg-8 quiz-config-box text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-md-7">
-          <h2 class="mb-3">Configuration du test</h2>
-          <p class="mb-3">BASE DE DONNEES</p>
-          <div class="row radio-box mt-3">
-            <div class="col-6">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="db-select"
-                id="option-a"
-                value="A"
-              />
-              <label class="form-check-label" for="option-a">AVION</label>
-            </div>
-            <div class="col-6">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="db-select"
-                value="H"
-                id="option-h"
-                checked
-              />
-              <label class="form-check-label" for="option-h"
-                >HELICOPTERE</label
-              >
-            </div>
-          </div>
-          <label for="uv-select" class="mt-3 mb-3">SUJET</label>
-          <select
-            name="uv-select"
-            class="form-control text-center"
-            id="uv-select"
-          >
-            <option value="">Choisissez une UV</option>
-          </select>
-          <div class="row btn-box mt-3">
-            <div class="col-6">
-              <button class="btn quiz-mode-btn btn-lg w-100" id="test-btn">
-                TEST
-              </button>
-            </div>
-            <div class="col-6">
-              <button class="btn quiz-mode-btn btn-lg w-100">EXAMEN</button>
-            </div>
-          </div>
-          <div class="row radio-box mt-3 test-options d-none">
-            <div class="col-md-4">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="question-type"
-                value="all"
-                id="option-all"
-                disabled
-              />
-              <label class="form-check-label" for="option-all"
-                >Toutes questions</label
-              >
-            </div>
-            <div class="col-md-4">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="question-type"
-                value="with"
-                id="option-with"
-                disabled
-              />
-              <label class="form-check-label" for="option-with"
-                >Avec Annexes</label
-              >
-            </div>
-            <div class="col-md-4">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="question-type"
-                value="without"
-                id="option-without"
-                checked
-              />
-              <label class="form-check-label" for="option-without"
-                >Sans Annexes</label
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="row mt-3 justify-content-center align-items-center test-options d-none"
-      >
-        <div class="col-md-10 subject-accordion">
-          <div class="accordion" id="subjectAccordion">
-            <!-- accordion item here -->
-          </div>
-        </div>
-      </div>
-      <div
-        class="row mt-3 justify-content-center align-items-center test-options d-none"
-      >
-        <div class="col-md-8">
-          Contiendra
-          <input
-            type="number"
-            class="ms-2 me-2 text-center"
-            name="desired-questions-count"
-            id="desired-questions-count"
-            required
-          /> 
-          Questions sur
-          <span id="selected-questions-count" class="text-danger fw-bold"
-            ></span
-          >
-          Questions
-        </div>
-      </div>
-      <div
-        class="row mt-3 justify-content-center align-items-center test-options d-none"
-      >
-        <div class="col-md-4">
-          <button class="btn quiz-mode-btn btn-lg w-100" id="start-btn">COMMENCER LE TEST</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script type="module" src="{{ '/assets/js/index.js' | relative_url }}"></script>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATPLKing</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

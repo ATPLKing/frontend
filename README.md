@@ -18,41 +18,70 @@ This project serves as the user-facing web interface and is built with the follo
 
 ## Tech Stack
 
-| Tech             | Role                                   |
-|------------------|----------------------------------------|
-| **HTML5 / CSS3** | Markup & styling                       |
-| **Bootstrap 5**  | Responsive layout & components         |
-| **JS**           | DOM manipulation, interactivity        |
-| **Iconify**      | Icon system                            |
-
+| Tech                | Role                                 |
+|---------------------|--------------------------------------|
+| **React 19**        | UI framework                         |
+| **TypeScript**      | Typed JavaScript                     |
+| **Vite**            | Build tool & dev server              |
+| **MUI (Material UI)** | Component library & theming        |
+| **React Router**    | Client-side routing                  |
 
 ---
 
-## Contribute
+## Getting Started
 
-### 1. Clone the repository
+### 1. Install dependencies
+
 ```bash
-git clone https://github.com/ATPLKing/frontend.git
-cd frontend
+npm install
 ```
 
-### 2. Run the project locally with Jekyll
+### 2. Configure the API
 
-1. Make sure you have [Ruby](https://www.ruby-lang.org/en/documentation/installation/) and [Bundler](https://bundler.io/) installed.
-2. Install Jekyll and project dependencies:
-  ```bash
-  gem install jekyll bundler
-  bundle install
-  ```
-3. Start the local server:
-  ```bash
-  bundle exec jekyll serve
-  ```
-4. Open your browser and navigate to `http://localhost:4000` to view the site.
+The app talks to the ATPLKing backend API. By default it targets `http://localhost:3000`.
 
+Copy the example environment file and adjust it if your backend runs elsewhere:
 
-## LICENSE 
+```bash
+cp .env.example .env
+```
 
+| Variable         | Description                      | Default               |
+|------------------|----------------------------------|-----------------------|
+| `VITE_API_URL`   | Base URL of the backend API      | `http://localhost:3000` |
+
+### 3. Run the dev server
+
+```bash
+npm run dev
+```
+
+Open your browser and navigate to the URL printed in the terminal (usually `http://localhost:5173`).
+
+---
+
+## Scripts
+
+| Command             | Description                              |
+|---------------------|------------------------------------------|
+| `npm run dev`       | Start the Vite dev server                |
+| `npm run build`     | Type-check and build for production      |
+| `npm run lint`      | Run oxlint                               |
+| `npm run preview`   | Preview the production build locally     |
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/   # Reusable UI components (Header, SubjectAccordion)
+├── pages/        # Route-level pages (Home, Quiz, Result, Historic)
+├── theme/        # MUI theme & dark/light mode context
+└── utils/        # API client, localStorage helpers, domain logic
+```
+
+## LICENSE
 
 This project is licensed under the GNU General Public License v3.0.
 You are free to use, modify, and distribute it under the terms of the license.
@@ -77,4 +106,3 @@ Feel free to reach out to me through any of the following platforms:
     <img src="https://img.shields.io/badge/LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
 </div>
-
