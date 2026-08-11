@@ -44,7 +44,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ pt: 5, pb: 5 }}>
+    <Container maxWidth="md" sx={{ pt: 5, pb: 5 }}>
       <Typography variant="h4" align="center" sx={{ mb: 3 }}>
         {t("settings.title")}
       </Typography>
@@ -75,7 +75,7 @@ export default function SettingsPage() {
             }}
           >
             <Box>
-              <Typography>{setting.label}</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>{setting.label}</Typography>
               <Typography variant="body2" color="text.secondary">
                 {setting.description}
               </Typography>
