@@ -8,7 +8,7 @@ import TestDialogs from "../components/quiz/TestDialogs";
 import { getCurrentTest, saveTest } from "../utils/test";
 import { FLAG_NONE, getQuestionFlag, setQuestionFlag } from "../utils/flag";
 import { getAnswerIndices } from "../utils/answer";
-import { getSetting, SETTING_AUTO_ADVANCE } from "../utils/settings";
+import { getBooleanSetting, SETTING_AUTO_ADVANCE } from "../utils/settings";
 import type { Question, Test } from "../utils/types";
 
 const QUESTIONS_PER_PAGE = 100;
@@ -110,7 +110,7 @@ export default function QuizPage() {
     setTest(updated);
     saveTest(updated);
     if (
-      getSetting(SETTING_AUTO_ADVANCE) &&
+      getBooleanSetting(SETTING_AUTO_ADVANCE) &&
       currentIndex + 1 < questions.length
     ) {
       const { correctIndex, userIndex } = getAnswerIndices(

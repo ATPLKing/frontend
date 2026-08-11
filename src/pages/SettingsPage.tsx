@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { Box, Container, Paper, Switch, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Paper,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import {
   loadSettings,
   setSetting,
   SETTING_AUTO_ADVANCE,
+  MIN_SUCCESS_PERCENTAGE,
 } from "../utils/settings";
 import type { SettingDefinition } from "../utils/settings";
 
@@ -15,18 +23,28 @@ export default function SettingsPage() {
   const settings: SettingDefinition[] = [
     {
       key: SETTING_AUTO_ADVANCE,
+      type: "switch",
       label: t("settings.autoAdvance"),
       description: t("settings.autoAdvanceDescription"),
     },
+    {
+      key: MIN_SUCCESS_PERCENTAGE,
+      type: "number",
+      min: 1,
+      max: 100,
+      step: 1,
+      label: t("settings.minSuccessPercentage"),
+      description: t("settings.minSuccessPercentageDescription"),
+    },
   ];
 
-  function handleChange(key: string, value: boolean) {
+  function handleChange(key: string, value: boolean | number) {
     setSetting(key, value);
     setSettingsValues({ ...settingsValues, [key]: value });
   }
 
   return (
-    <Container maxWidth="md" sx={{ pt: 5, pb: 5 }}>
+    <Container maxWidth="sm" sx={{ pt: 5, pb: 5 }}>
       <Typography variant="h4" align="center" sx={{ mb: 3 }}>
         {t("settings.title")}
       </Typography>
@@ -62,10 +80,32 @@ export default function SettingsPage() {
                 {setting.description}
               </Typography>
             </Box>
-            <Switch
-              checked={Boolean(settingsValues[setting.key])}
-              onChange={(event) => handleChange(setting.key, event.target.checked)}
-            />
+            {setting.type === "number" ? (
+              <TextField
+                type="number"
+                size="small"
+                value={settingsValues[setting.key] ?? ""}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (!Number.isNaN(value)) handleChange(setting.key, value);
+                }}
+                slotProps={{
+                  htmlInput: {
+                    min: setting.min,
+                    max: setting.max,
+                    step: setting.step,
+                  },
+                }}
+                sx={{ width: 100 }}
+              />
+            ) : (
+              <Switch
+                checked={Boolean(settingsValues[setting.key])}
+                onChange={(event) =>
+                  handleChange(setting.key, event.target.checked)
+                }
+              />
+            )}
           </Box>
         ))}
       </Paper>

@@ -25,7 +25,9 @@
     "title": "Paramètres",
     "quiz": "Comportement du test",
     "autoAdvance": "Passer automatiquement à la question suivante",
-    "autoAdvanceDescription": "Après une bonne réponse, aller directement à la question suivante."
+    "autoAdvanceDescription": "Après une bonne réponse, aller directement à la question suivante.",
+    "minSuccessPercentage": "Score de réussite",
+    "minSuccessPercentageDescription": "Pourcentage de bonnes réponses à atteindre pour réussir le test."
   },
   "home": {
     "title": "Configuration du test",

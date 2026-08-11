@@ -25,7 +25,9 @@
     "title": "Settings",
     "quiz": "Test behavior",
     "autoAdvance": "Advance automatically to the next question",
-    "autoAdvanceDescription": "After a correct answer, move directly to the next question."
+    "autoAdvanceDescription": "After a correct answer, move directly to the next question.",
+    "minSuccessPercentage": "Success score",
+    "minSuccessPercentageDescription": "Percentage of correct answers required to pass the test."
   },
   "home": {
     "title": "Test configuration",

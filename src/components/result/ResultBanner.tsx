@@ -2,8 +2,9 @@ import { Box, CircularProgress, IconButton, Paper, Typography } from "@mui/mater
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { formatSeconds } from "../../utils/time";
+import { getNumberSetting, MIN_SUCCESS_PERCENTAGE } from "../../utils/settings";
 
-const PASS_THRESHOLD = 75;
+const PASS_THRESHOLD = getNumberSetting(MIN_SUCCESS_PERCENTAGE, 75);
 
 interface ResultBannerProps {
   title: string;
