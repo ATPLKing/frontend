@@ -14,11 +14,18 @@
   "header": {
     "history": "Test history",
     "admin": "Manage question banks",
+    "settings": "Settings",
     "menu": "menu",
     "toggleTheme": "Toggle theme",
     "github": "github",
     "buyCoffee": "Buy me a coffee",
     "language": "Change language"
+  },
+  "settings": {
+    "title": "Settings",
+    "quiz": "Test behavior",
+    "autoAdvance": "Advance automatically to the next question",
+    "autoAdvanceDescription": "After a correct answer, move directly to the next question."
   },
   "home": {
     "title": "Test configuration",
@@ -48,7 +55,13 @@
     "incompleteMessage": "You must answer all questions to finish the test! You still have {{count}} unanswered questions!",
     "finishTitle": "Finish the test",
     "finishMessage": "Are you sure you want to finish the test?",
-    "saveTitle": "Save the test"
+    "saveTitle": "Save the test",
+    "flags": "Flags",
+    "filterAll": "All",
+    "filterEmpty": "No questions match this filter.",
+    "flagRed": "Red flag",
+    "flagYellow": "Yellow flag",
+    "flagGreen": "Green flag"
   },
   "result": {
     "title": "TEST RESULT",

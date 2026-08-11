@@ -19,6 +19,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LanguageIcon from "@mui/icons-material/Language";
 import CheckIcon from "@mui/icons-material/Check";
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslation } from "react-i18next";
 import { useThemeMode } from "../theme/theme-context";
 import { setLanguage } from "../i18n";
@@ -101,6 +102,15 @@ export default function Header() {
             >
               <LibraryBooksIcon sx={{ mr: 1, fontSize: 20 }} />
               {t("header.admin")}
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleMenuClose();
+                navigate("/setting");
+              }}
+            >
+              <SettingsIcon sx={{ mr: 1, fontSize: 20 }} />
+              {t("header.settings")}
             </MenuItem>
           </Menu>
 

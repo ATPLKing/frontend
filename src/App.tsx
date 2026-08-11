@@ -8,6 +8,7 @@ import QuizPage from "./pages/QuizPage";
 import ResultPage from "./pages/ResultPage";
 import HistoricPage from "./pages/HistoricPage";
 import AdminPage from "./pages/AdminPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function AppContent() {
   const { theme } = useThemeMode();
@@ -22,6 +23,7 @@ function AppContent() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/historic" element={<HistoricPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/setting" element={<SettingsPage />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
     </MuiThemeProvider>

@@ -6,6 +6,9 @@ import QuestionCard from "../components/quiz/QuestionCard";
 import QuestionNavigator from "../components/quiz/QuestionNavigator";
 import TestDialogs from "../components/quiz/TestDialogs";
 import { getCurrentTest, saveTest } from "../utils/test";
+import { FLAG_NONE, getQuestionFlag, setQuestionFlag } from "../utils/flag";
+import { getAnswerIndices } from "../utils/answer";
+import { getSetting, SETTING_AUTO_ADVANCE } from "../utils/settings";
 import type { Question, Test } from "../utils/types";
 
 const QUESTIONS_PER_PAGE = 100;
@@ -20,6 +23,13 @@ export default function QuizPage() {
   const [timeElapsed, setTimeElapsed] = useState(
     () => getCurrentTest()?.timeElapsed ?? 0
   );
+  const [flags, setFlags] = useState<number[]>(() => {
+    const loaded = getCurrentTest();
+    return (loaded?.questions ?? []).map((question) =>
+      getQuestionFlag(question.id)
+    );
+  });
+  const [flagFilter, setFlagFilter] = useState<number[]>([]);
   const [page, setPage] = useState(1);
   const [incompleteOpen, setIncompleteOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
@@ -39,7 +49,26 @@ export default function QuizPage() {
 
   const questions = useMemo<Question[]>(() => test?.questions ?? [], [test]);
   const question = questions[currentIndex];
-  const totalPages = Math.max(1, Math.ceil(questions.length / QUESTIONS_PER_PAGE));
+
+  const visibleIndices = useMemo(() => {
+    if (flagFilter.length === 0) {
+      return questions.map((_unused, i) => i);
+    }
+    return questions
+      .map((_unused, i) => i)
+      .filter((i) => flagFilter.includes(flags[i] ?? FLAG_NONE));
+  }, [questions, flags, flagFilter]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(visibleIndices.length / QUESTIONS_PER_PAGE)
+  );
+  const pageStart = (page - 1) * QUESTIONS_PER_PAGE;
+  const pageEnd = Math.min(
+    pageStart + QUESTIONS_PER_PAGE,
+    visibleIndices.length
+  );
+  const displayIndices = visibleIndices.slice(pageStart, pageEnd);
 
   useEffect(() => {
     if (!test || test.score !== undefined) return;
@@ -80,6 +109,38 @@ export default function QuizPage() {
     const updated = { ...test, userAnswers: next };
     setTest(updated);
     saveTest(updated);
+    if (
+      getSetting(SETTING_AUTO_ADVANCE) &&
+      currentIndex + 1 < questions.length
+    ) {
+      const { correctIndex, userIndex } = getAnswerIndices(
+        questions[currentIndex],
+        optionIndex
+      );
+      if (userIndex === correctIndex) {
+        setCurrentIndex(currentIndex + 1);
+      }
+    }
+  }
+
+  function handleSetFlag(value: number) {
+    if (!test) return;
+    const question = test.questions[currentIndex];
+    const nextFlag = flags[currentIndex] === value ? FLAG_NONE : value;
+    const next = [...flags];
+    next[currentIndex] = nextFlag;
+    setFlags(next);
+    setQuestionFlag(question.id, nextFlag);
+  }
+
+  function handleToggleFlagFilter(value: number) {
+    setFlagFilter((prev) => {
+      if (value === FLAG_NONE) return [];
+      return prev.includes(value)
+        ? prev.filter((v) => v !== value)
+        : [...prev, value];
+    });
+    setPage(1);
   }
 
   function handlePrev() {
@@ -96,7 +157,10 @@ export default function QuizPage() {
 
   function goToQuestion(index: number) {
     setCurrentIndex(index);
-    setPage(Math.floor(index / QUESTIONS_PER_PAGE) + 1);
+    const position = visibleIndices.indexOf(index);
+    if (position >= 0) {
+      setPage(Math.floor(position / QUESTIONS_PER_PAGE) + 1);
+    }
   }
 
   function handleEndClick() {
@@ -122,9 +186,6 @@ export default function QuizPage() {
     navigate("/historic");
   }
 
-  const pageStart = (page - 1) * QUESTIONS_PER_PAGE;
-  const pageEnd = Math.min(pageStart + QUESTIONS_PER_PAGE, questions.length);
-
   return (
     <Container maxWidth="xl" sx={{ pt: 3, pb: 5 }}>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
@@ -138,6 +199,8 @@ export default function QuizPage() {
             total={questions.length}
             timeElapsed={timeElapsed}
             questionId={question.id}
+            flag={flags[currentIndex] ?? FLAG_NONE}
+            onSetFlag={handleSetFlag}
             onPrev={handlePrev}
             onNext={handleNext}
           />
@@ -154,13 +217,16 @@ export default function QuizPage() {
         <QuestionNavigator
           questions={questions}
           userAnswers={userAnswers}
+          flags={flags}
+          displayIndices={displayIndices}
           currentIndex={currentIndex}
-          pageStart={pageStart}
-          pageEnd={pageEnd}
           totalPages={totalPages}
           page={page}
+          flagFilter={flagFilter}
+          allAnswered={answeredCount === questions.length}
           onPageChange={setPage}
           onGoTo={goToQuestion}
+          onToggleFlagFilter={handleToggleFlagFilter}
           onPause={() => setPauseOpen(true)}
           onEnd={handleEndClick}
         />

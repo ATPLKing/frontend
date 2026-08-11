@@ -14,11 +14,18 @@
   "header": {
     "history": "Historique de tests",
     "admin": "Gérer les banques de questions",
+    "settings": "Paramètres",
     "menu": "menu",
     "toggleTheme": "Basculer le thème",
     "github": "github",
     "buyCoffee": "Buy me a coffee",
     "language": "Changer de langue"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "quiz": "Comportement du test",
+    "autoAdvance": "Passer automatiquement à la question suivante",
+    "autoAdvanceDescription": "Après une bonne réponse, aller directement à la question suivante."
   },
   "home": {
     "title": "Configuration du test",
@@ -48,7 +55,13 @@
     "incompleteMessage": "Vous devez répondre à toutes les questions pour terminer le test ! Il vous reste {{count}} questions sans réponse !",
     "finishTitle": "Terminer le test",
     "finishMessage": "Êtes-vous sûr de vouloir terminer le test ?",
-    "saveTitle": "Enregistrer le test"
+    "saveTitle": "Enregistrer le test",
+    "flags": "Drapeaux",
+    "filterAll": "Tous",
+    "filterEmpty": "Aucune question avec ce filtre.",
+    "flagRed": "Drapeau rouge",
+    "flagYellow": "Drapeau jaune",
+    "flagGreen": "Drapeau vert"
   },
   "result": {
     "title": "RESULTAT DE TEST",
