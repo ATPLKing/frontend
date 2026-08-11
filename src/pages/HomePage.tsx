@@ -12,6 +12,10 @@ import { countQuestionsPerSubject } from "../utils/stats";
 import { shuffleArray } from "../utils/array";
 import { createTest, saveTest, setCurrentTestId } from "../utils/test";
 import { loadQuestionBanks } from "../utils/questionBank";
+import {
+  getNumberSetting,
+  MIN_SUCCESS_PERCENTAGE,
+} from "../utils/settings";
 import type { QuestionBank } from "../utils/types";
 
 export default function HomePage() {
@@ -128,6 +132,7 @@ export default function HomePage() {
       bankName: selectedBank.name,
       subject: subjectLabel,
       questions: finalQuestions,
+      minSuccessScore: getNumberSetting(MIN_SUCCESS_PERCENTAGE, 75),
     });
     saveTest(test);
     setCurrentTestId(test.id);

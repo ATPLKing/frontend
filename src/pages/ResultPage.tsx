@@ -6,6 +6,7 @@ import ResultQuestionList from "../components/result/ResultQuestionList";
 import QuestionReviewDialog from "../components/result/QuestionReviewDialog";
 import { getAnswerPercentages, getAnswerScores } from "../utils/answer";
 import { getCurrentTest, saveTest } from "../utils/test";
+import { getNumberSetting, MIN_SUCCESS_PERCENTAGE } from "../utils/settings";
 
 export default function ResultPage() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export default function ResultPage() {
         correctCount={correctCount}
         totalCount={totalCount}
         percentage={percentage}
+        passThreshold={test.params.minSuccessScore ?? getNumberSetting(MIN_SUCCESS_PERCENTAGE, 75)}
         onBack={() => navigate(-1)}
       />
 

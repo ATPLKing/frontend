@@ -49,6 +49,7 @@ export interface TestParams {
   bankName: string;
   subject: string;
   questions: Question[];
+  minSuccessScore: number;
 }
 
 export interface Test {

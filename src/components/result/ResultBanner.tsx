@@ -2,9 +2,6 @@ import { Box, CircularProgress, IconButton, Paper, Typography } from "@mui/mater
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { formatSeconds } from "../../utils/time";
-import { getNumberSetting, MIN_SUCCESS_PERCENTAGE } from "../../utils/settings";
-
-const PASS_THRESHOLD = getNumberSetting(MIN_SUCCESS_PERCENTAGE, 75);
 
 interface ResultBannerProps {
   title: string;
@@ -13,6 +10,7 @@ interface ResultBannerProps {
   correctCount: number;
   totalCount: number;
   percentage: number;
+  passThreshold: number;
   onBack: () => void;
 }
 
@@ -23,10 +21,11 @@ export default function ResultBanner({
   correctCount,
   totalCount,
   percentage,
+  passThreshold,
   onBack,
 }: ResultBannerProps) {
   const { t } = useTranslation();
-  const succeeded = percentage >= PASS_THRESHOLD;
+  const succeeded = percentage >= passThreshold;
   const bannerColor = succeeded ? "#59b368" : "#ff5236";
   const arcColor = succeeded ? "#3e8e41" : "#ff745e";
 
