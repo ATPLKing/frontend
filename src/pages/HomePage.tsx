@@ -7,14 +7,20 @@ import TestActionButtons from "../components/home/TestActionButtons";
 import QuestionCountPicker from "../components/home/QuestionCountPicker";
 import SubjectAccordion from "../components/SubjectAccordion";
 import AppSnackbar from "../components/common/AppSnackbar";
+import QuestionFilterPanel from "../components/home/QuestionFilterPanel";
 import { filterQuestionsBySubtopics } from "../utils/question";
 import { countQuestionsPerSubject } from "../utils/stats";
 import { shuffleArray } from "../utils/array";
-import { createTest, saveTest, setCurrentTestId } from "../utils/test";
+import { createTest, saveTest, setCurrentTestId, getSeenQuestionIds } from "../utils/test";
 import { loadQuestionBanks } from "../utils/questionBank";
+import { loadSavedFlags, FLAG_NONE } from "../utils/flag";
+import { loadSavedNotes } from "../utils/note";
 import {
+  getBooleanSetting,
   getNumberSetting,
   MIN_SUCCESS_PERCENTAGE,
+  SETTING_RANDOMIZE_QUESTIONS,
+  SETTING_SHUFFLE_ANSWERS,
 } from "../utils/settings";
 import type { QuestionBank } from "../utils/types";
 
@@ -31,6 +37,13 @@ export default function HomePage() {
   const [desiredCount, setDesiredCount] = useState(0);
   const [snackbar, setSnackbar] = useState("");
   const [examSnackbar, setExamSnackbar] = useState(false);
+  const [flagFilter, setFlagFilter] = useState<number[]>([]);
+  const [unseenOnly, setUnseenOnly] = useState(false);
+  const [notesOnly, setNotesOnly] = useState(false);
+
+  const savedFlags = useMemo(() => loadSavedFlags(), []);
+  const seenIds = useMemo(() => getSeenQuestionIds(), []);
+  const savedNotes = useMemo(() => loadSavedNotes(), []);
 
   const selectedBank = useMemo(
     () => banks.find((bank) => bank.id === selectedBankId) ?? null,
@@ -41,14 +54,31 @@ export default function HomePage() {
     [selectedBank]
   );
 
+  const filteredByMeta = useMemo(() => {
+    return questions.filter((q) => {
+      const flagMatch =
+        flagFilter.length === 0 ||
+        flagFilter.includes(savedFlags[q.id] ?? FLAG_NONE);
+      const unseenMatch = !unseenOnly || !seenIds.has(q.id);
+      const notesMatch =
+        !notesOnly || Object.prototype.hasOwnProperty.call(savedNotes, q.id);
+      return flagMatch && unseenMatch && notesMatch;
+    });
+  }, [questions, flagFilter, savedFlags, unseenOnly, seenIds, notesOnly, savedNotes]);
+
   const filteredQuestions = useMemo(
-    () => filterQuestionsBySubtopics(questions, [...selectedSubtopics]),
-    [questions, selectedSubtopics]
+    () =>
+      filterQuestionsBySubtopics(filteredByMeta, [...selectedSubtopics]),
+    [filteredByMeta, selectedSubtopics]
   );
 
   const subjectStats = useMemo(
-    () => countQuestionsPerSubject(questions, selectedBank?.subjects ?? []),
-    [questions, selectedBank]
+    () =>
+      countQuestionsPerSubject(
+        filteredByMeta,
+        selectedBank?.subjects ?? []
+      ),
+    [filteredByMeta, selectedBank]
   );
 
   useEffect(() => {
@@ -120,11 +150,16 @@ export default function HomePage() {
       .map((subject) => subject.name)
       .join(", ");
 
-    const shuffled = shuffleArray([...filteredQuestions]);
-    shuffled.forEach((question) => {
-      question.options = shuffleArray(question.options);
+    let selected = [...filteredQuestions];
+    if (getBooleanSetting(SETTING_RANDOMIZE_QUESTIONS)) {
+      selected = shuffleArray(selected);
+    }
+    selected.forEach((question) => {
+      if (getBooleanSetting(SETTING_SHUFFLE_ANSWERS)) {
+        question.options = shuffleArray(question.options);
+      }
     });
-    const finalQuestions = shuffled.slice(0, desiredCount);
+    const finalQuestions = selected.slice(0, desiredCount);
 
     const test = createTest({
       mode: "TEST",
@@ -169,8 +204,23 @@ export default function HomePage() {
           {testOptionsVisible && selectedBank && (
             <>
               <Box
-                sx={{ maxWidth: 600, mx: "auto", textAlign: "left", mb: 3 }}
+                sx={{
+                  maxWidth: 600,
+                  mx: "auto",
+                  textAlign: "left",
+                  mb: 3,
+                }}
               >
+                <Box sx={{ mb: 2 }}>
+                  <QuestionFilterPanel
+                    flagFilter={flagFilter}
+                    onFlagFilterChange={setFlagFilter}
+                    unseenOnly={unseenOnly}
+                    onUnseenOnlyChange={setUnseenOnly}
+                    notesOnly={notesOnly}
+                    onNotesOnlyChange={setNotesOnly}
+                  />
+                </Box>
                 <SubjectAccordion
                   data={subjectStats}
                   selectedSubtopics={selectedSubtopics}

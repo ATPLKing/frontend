@@ -8,7 +8,7 @@ import TestDialogs from "../components/quiz/TestDialogs";
 import { getCurrentTest, saveTest } from "../utils/test";
 import { FLAG_NONE, getQuestionFlag, setQuestionFlag } from "../utils/flag";
 import { getAnswerIndices } from "../utils/answer";
-import { getBooleanSetting, SETTING_AUTO_ADVANCE } from "../utils/settings";
+import { getBooleanSetting, SETTING_AUTO_ADVANCE, SETTING_HIDE_ANSWERS } from "../utils/settings";
 import type { Question, Test } from "../utils/types";
 
 const QUESTIONS_PER_PAGE = 100;
@@ -133,13 +133,8 @@ export default function QuizPage() {
     setQuestionFlag(question.id, nextFlag);
   }
 
-  function handleToggleFlagFilter(value: number) {
-    setFlagFilter((prev) => {
-      if (value === FLAG_NONE) return [];
-      return prev.includes(value)
-        ? prev.filter((v) => v !== value)
-        : [...prev, value];
-    });
+  function handleFlagFilterChange(value: number[]) {
+    setFlagFilter(value);
     setPage(1);
   }
 
@@ -224,9 +219,10 @@ export default function QuizPage() {
           page={page}
           flagFilter={flagFilter}
           allAnswered={answeredCount === questions.length}
+          hideAnswers={getBooleanSetting(SETTING_HIDE_ANSWERS)}
           onPageChange={setPage}
           onGoTo={goToQuestion}
-          onToggleFlagFilter={handleToggleFlagFilter}
+          onFlagFilterChange={handleFlagFilterChange}
           onPause={() => setPauseOpen(true)}
           onEnd={handleEndClick}
         />

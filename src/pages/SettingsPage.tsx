@@ -13,6 +13,9 @@ import {
   setSetting,
   SETTING_AUTO_ADVANCE,
   MIN_SUCCESS_PERCENTAGE,
+  SETTING_SHUFFLE_ANSWERS,
+  SETTING_RANDOMIZE_QUESTIONS,
+  SETTING_HIDE_ANSWERS,
 } from "../utils/settings";
 import type { SettingDefinition } from "../utils/settings";
 
@@ -36,6 +39,24 @@ export default function SettingsPage() {
       label: t("settings.minSuccessPercentage"),
       description: t("settings.minSuccessPercentageDescription"),
     },
+    {
+      key: SETTING_SHUFFLE_ANSWERS,
+      type: "switch",
+      label: t("settings.shuffleAnswers"),
+      description: t("settings.shuffleAnswersDescription"),
+    },
+    {
+      key: SETTING_RANDOMIZE_QUESTIONS,
+      type: "switch",
+      label: t("settings.randomizeQuestions"),
+      description: t("settings.randomizeQuestionsDescription"),
+    },
+    {
+      key: SETTING_HIDE_ANSWERS,
+      type: "switch",
+      label: t("settings.hideAnswers"),
+      description: t("settings.hideAnswersDescription"),
+    },
   ];
 
   function handleChange(key: string, value: boolean | number) {
@@ -44,7 +65,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ pt: 5, pb: 5 }}>
+    <Container maxWidth="md" sx={{ pt: 5, pb: 5 }}>
       <Typography variant="h4" align="center" sx={{ mb: 3 }}>
         {t("settings.title")}
       </Typography>
@@ -75,7 +96,7 @@ export default function SettingsPage() {
             }}
           >
             <Box>
-              <Typography>{setting.label}</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>{setting.label}</Typography>
               <Typography variant="body2" color="text.secondary">
                 {setting.description}
               </Typography>
