@@ -7,11 +7,13 @@ import TestActionButtons from "../components/home/TestActionButtons";
 import QuestionCountPicker from "../components/home/QuestionCountPicker";
 import SubjectAccordion from "../components/SubjectAccordion";
 import AppSnackbar from "../components/common/AppSnackbar";
+import QuestionFilterPanel from "../components/home/QuestionFilterPanel";
 import { filterQuestionsBySubtopics } from "../utils/question";
 import { countQuestionsPerSubject } from "../utils/stats";
 import { shuffleArray } from "../utils/array";
-import { createTest, saveTest, setCurrentTestId } from "../utils/test";
+import { createTest, saveTest, setCurrentTestId, getSeenQuestionIds } from "../utils/test";
 import { loadQuestionBanks } from "../utils/questionBank";
+import { loadSavedFlags, FLAG_NONE } from "../utils/flag";
 import {
   getBooleanSetting,
   getNumberSetting,
@@ -34,6 +36,11 @@ export default function HomePage() {
   const [desiredCount, setDesiredCount] = useState(0);
   const [snackbar, setSnackbar] = useState("");
   const [examSnackbar, setExamSnackbar] = useState(false);
+  const [flagFilter, setFlagFilter] = useState<number[]>([]);
+  const [unseenOnly, setUnseenOnly] = useState(false);
+
+  const savedFlags = useMemo(() => loadSavedFlags(), []);
+  const seenIds = useMemo(() => getSeenQuestionIds(), []);
 
   const selectedBank = useMemo(
     () => banks.find((bank) => bank.id === selectedBankId) ?? null,
@@ -44,14 +51,29 @@ export default function HomePage() {
     [selectedBank]
   );
 
+  const filteredByMeta = useMemo(() => {
+    return questions.filter((q) => {
+      const flagMatch =
+        flagFilter.length === 0 ||
+        flagFilter.includes(savedFlags[q.id] ?? FLAG_NONE);
+      const unseenMatch = !unseenOnly || !seenIds.has(q.id);
+      return flagMatch && unseenMatch;
+    });
+  }, [questions, flagFilter, savedFlags, unseenOnly, seenIds]);
+
   const filteredQuestions = useMemo(
-    () => filterQuestionsBySubtopics(questions, [...selectedSubtopics]),
-    [questions, selectedSubtopics]
+    () =>
+      filterQuestionsBySubtopics(filteredByMeta, [...selectedSubtopics]),
+    [filteredByMeta, selectedSubtopics]
   );
 
   const subjectStats = useMemo(
-    () => countQuestionsPerSubject(questions, selectedBank?.subjects ?? []),
-    [questions, selectedBank]
+    () =>
+      countQuestionsPerSubject(
+        filteredByMeta,
+        selectedBank?.subjects ?? []
+      ),
+    [filteredByMeta, selectedBank]
   );
 
   useEffect(() => {
@@ -177,8 +199,21 @@ export default function HomePage() {
           {testOptionsVisible && selectedBank && (
             <>
               <Box
-                sx={{ maxWidth: 600, mx: "auto", textAlign: "left", mb: 3 }}
+                sx={{
+                  maxWidth: 600,
+                  mx: "auto",
+                  textAlign: "left",
+                  mb: 3,
+                }}
               >
+                <Box sx={{ mb: 2 }}>
+                  <QuestionFilterPanel
+                    flagFilter={flagFilter}
+                    onFlagFilterChange={setFlagFilter}
+                    unseenOnly={unseenOnly}
+                    onUnseenOnlyChange={setUnseenOnly}
+                  />
+                </Box>
                 <SubjectAccordion
                   data={subjectStats}
                   selectedSubtopics={selectedSubtopics}

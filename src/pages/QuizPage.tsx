@@ -133,13 +133,8 @@ export default function QuizPage() {
     setQuestionFlag(question.id, nextFlag);
   }
 
-  function handleToggleFlagFilter(value: number) {
-    setFlagFilter((prev) => {
-      if (value === FLAG_NONE) return [];
-      return prev.includes(value)
-        ? prev.filter((v) => v !== value)
-        : [...prev, value];
-    });
+  function handleFlagFilterChange(value: number[]) {
+    setFlagFilter(value);
     setPage(1);
   }
 
@@ -227,7 +222,7 @@ export default function QuizPage() {
           hideAnswers={getBooleanSetting(SETTING_HIDE_ANSWERS)}
           onPageChange={setPage}
           onGoTo={goToQuestion}
-          onToggleFlagFilter={handleToggleFlagFilter}
+          onFlagFilterChange={handleFlagFilterChange}
           onPause={() => setPauseOpen(true)}
           onEnd={handleEndClick}
         />

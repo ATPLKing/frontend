@@ -1,13 +1,8 @@
-import { Box, Button, Pagination, Paper, Typography } from "@mui/material";
+import { Box, Button, Pagination, Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { getAnswerIndices } from "../../utils/answer";
-import {
-  flagButtonOrder,
-  flagColors,
-  FLAG_NONE,
-  FLAG_RED,
-  FLAG_YELLOW,
-} from "../../utils/flag";
+import { flagColors, FLAG_NONE } from "../../utils/flag";
+import FlagFilter from "../common/FlagFilter";
 import type { Question } from "../../utils/types";
 
 interface NavStyle {
@@ -28,7 +23,7 @@ interface QuestionNavigatorProps {
   hideAnswers: boolean;
   onPageChange: (value: number) => void;
   onGoTo: (index: number) => void;
-  onToggleFlagFilter: (value: number) => void;
+  onFlagFilterChange: (value: number[]) => void;
   onPause: () => void;
   onEnd: () => void;
 }
@@ -46,7 +41,7 @@ export default function QuestionNavigator({
   hideAnswers,
   onPageChange,
   onGoTo,
-  onToggleFlagFilter,
+  onFlagFilterChange,
   onPause,
   onEnd,
 }: QuestionNavigatorProps) {
@@ -81,57 +76,12 @@ export default function QuestionNavigator({
           {t("quiz.finish")}
         </Button>
 
-        <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
-          {t("quiz.flags")}
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 0.5,
-            mb: 2,
-          }}
-        >
-          <Button
-            size="small"
-            variant={flagFilter.length === 0 ? "contained" : "outlined"}
-            onClick={() => onToggleFlagFilter(FLAG_NONE)}
-            sx={{ minWidth: 0, px: 1 }}
-          >
-            {t("quiz.filterAll")}
-          </Button>
-          {flagButtonOrder.map((value) => {
-            const active = flagFilter.includes(value);
-            return (
-              <Button
-                key={value}
-                size="small"
-                title={
-                  value === FLAG_RED
-                    ? t("quiz.flagRed")
-                    : value === FLAG_YELLOW
-                      ? t("quiz.flagYellow")
-                      : t("quiz.flagGreen")
-                }
-                onClick={() => onToggleFlagFilter(value)}
-                sx={{
-                  minWidth: 32,
-                  width: 32,
-                  height: 32,
-                  p: 0,
-                  borderRadius: "50%",
-                  bgcolor: active ? flagColors[value] : "transparent",
-                  border: 2,
-                  borderColor: flagColors[value],
-                  "&:hover": {
-                    bgcolor: active
-                      ? flagColors[value]
-                      : "rgba(0, 0, 0, 0.04)",
-                  },
-                }}
-              />
-            );
-          })}
+        <Box sx={{ mb: 2 }}>
+          <FlagFilter
+            value={flagFilter}
+            onChange={onFlagFilterChange}
+            label={t("quiz.flags")}
+          />
         </Box>
 
         <Box
