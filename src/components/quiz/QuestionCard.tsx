@@ -6,6 +6,7 @@ import NotesIcon from "@mui/icons-material/Notes";
 import { useTranslation } from "react-i18next";
 import { getAnswerIndices } from "../../utils/answer";
 import { findNote, saveNote, deleteNote } from "../../utils/note";
+import { getBooleanSetting, SETTING_HIDE_ANSWERS } from "../../utils/settings";
 import type { Question } from "../../utils/types";
 
 interface QuestionCardProps {
@@ -27,6 +28,7 @@ export default function QuestionCard({
   const [noteSaved, setNoteSaved] = useState(() => findNote(question.id) !== "");
 
   const answered = userAnswer !== undefined && userAnswer !== null;
+  const showCorrect = answered && !getBooleanSetting(SETTING_HIDE_ANSWERS);
   const { correctIndex, userIndex } = getAnswerIndices(question, userAnswer);
 
   function handleSaveNote() {
@@ -76,7 +78,7 @@ export default function QuestionCard({
               let borderColor = "divider";
               let textColor = "text.primary";
               let fontWeight = "normal";
-              if (answered) {
+              if (showCorrect) {
                 if (i === correctIndex) {
                   borderColor = "success.main";
                   textColor = "success.main";

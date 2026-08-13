@@ -27,7 +27,13 @@
     "autoAdvance": "Advance automatically to the next question",
     "autoAdvanceDescription": "After a correct answer, move directly to the next question.",
     "minSuccessPercentage": "Success score",
-    "minSuccessPercentageDescription": "Percentage of correct answers required to pass the test."
+    "minSuccessPercentageDescription": "Percentage of correct answers required to pass the test.",
+    "shuffleAnswers": "Shuffle answers",
+    "shuffleAnswersDescription": "Shuffle the answer order of each question.",
+    "randomizeQuestions": "Randomize questions",
+    "randomizeQuestionsDescription": "Display questions in a random order.",
+    "hideAnswers": "Hide answers during the test",
+    "hideAnswersDescription": "The correct answer is not shown while answering. Answers are revealed once the test is finished."
   },
   "home": {
     "title": "Test configuration",

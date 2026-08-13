@@ -25,6 +25,7 @@ interface QuestionNavigatorProps {
   page: number;
   flagFilter: number[];
   allAnswered: boolean;
+  hideAnswers: boolean;
   onPageChange: (value: number) => void;
   onGoTo: (index: number) => void;
   onToggleFlagFilter: (value: number) => void;
@@ -42,6 +43,7 @@ export default function QuestionNavigator({
   page,
   flagFilter,
   allAnswered,
+  hideAnswers,
   onPageChange,
   onGoTo,
   onToggleFlagFilter,
@@ -53,6 +55,9 @@ export default function QuestionNavigator({
   function navStyle(index: number): NavStyle {
     const answer = userAnswers[index];
     if (answer === undefined || answer === null) return {};
+    if (hideAnswers) {
+      return { color: "#ffffff", bgcolor: "#0474C4" };
+    }
     const { correctIndex, userIndex } = getAnswerIndices(questions[index], answer);
     if (userIndex === correctIndex) {
       return { color: "#ffffff", bgcolor: "#43C361" };

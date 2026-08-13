@@ -8,7 +8,7 @@ import TestDialogs from "../components/quiz/TestDialogs";
 import { getCurrentTest, saveTest } from "../utils/test";
 import { FLAG_NONE, getQuestionFlag, setQuestionFlag } from "../utils/flag";
 import { getAnswerIndices } from "../utils/answer";
-import { getBooleanSetting, SETTING_AUTO_ADVANCE } from "../utils/settings";
+import { getBooleanSetting, SETTING_AUTO_ADVANCE, SETTING_HIDE_ANSWERS } from "../utils/settings";
 import type { Question, Test } from "../utils/types";
 
 const QUESTIONS_PER_PAGE = 100;
@@ -224,6 +224,7 @@ export default function QuizPage() {
           page={page}
           flagFilter={flagFilter}
           allAnswered={answeredCount === questions.length}
+          hideAnswers={getBooleanSetting(SETTING_HIDE_ANSWERS)}
           onPageChange={setPage}
           onGoTo={goToQuestion}
           onToggleFlagFilter={handleToggleFlagFilter}

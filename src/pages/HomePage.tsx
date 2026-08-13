@@ -13,8 +13,11 @@ import { shuffleArray } from "../utils/array";
 import { createTest, saveTest, setCurrentTestId } from "../utils/test";
 import { loadQuestionBanks } from "../utils/questionBank";
 import {
+  getBooleanSetting,
   getNumberSetting,
   MIN_SUCCESS_PERCENTAGE,
+  SETTING_RANDOMIZE_QUESTIONS,
+  SETTING_SHUFFLE_ANSWERS,
 } from "../utils/settings";
 import type { QuestionBank } from "../utils/types";
 
@@ -120,11 +123,16 @@ export default function HomePage() {
       .map((subject) => subject.name)
       .join(", ");
 
-    const shuffled = shuffleArray([...filteredQuestions]);
-    shuffled.forEach((question) => {
-      question.options = shuffleArray(question.options);
+    let selected = [...filteredQuestions];
+    if (getBooleanSetting(SETTING_RANDOMIZE_QUESTIONS)) {
+      selected = shuffleArray(selected);
+    }
+    selected.forEach((question) => {
+      if (getBooleanSetting(SETTING_SHUFFLE_ANSWERS)) {
+        question.options = shuffleArray(question.options);
+      }
     });
-    const finalQuestions = shuffled.slice(0, desiredCount);
+    const finalQuestions = selected.slice(0, desiredCount);
 
     const test = createTest({
       mode: "TEST",

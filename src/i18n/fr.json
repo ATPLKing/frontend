@@ -27,7 +27,13 @@
     "autoAdvance": "Passer automatiquement à la question suivante",
     "autoAdvanceDescription": "Après une bonne réponse, aller directement à la question suivante.",
     "minSuccessPercentage": "Score de réussite",
-    "minSuccessPercentageDescription": "Pourcentage de bonnes réponses à atteindre pour réussir le test."
+    "minSuccessPercentageDescription": "Pourcentage de bonnes réponses à atteindre pour réussir le test.",
+    "shuffleAnswers": "Mélanger les réponses",
+    "shuffleAnswersDescription": "Mélanger l'ordre des réponses de chaque question.",
+    "randomizeQuestions": "Mélanger les questions",
+    "randomizeQuestionsDescription": "Afficher les questions dans un ordre aléatoire.",
+    "hideAnswers": "Masquer les réponses pendant le test",
+    "hideAnswersDescription": "La bonne réponse n'est pas affichée pendant le test. Les réponses sont révélées une fois le test terminé."
   },
   "home": {
     "title": "Configuration du test",

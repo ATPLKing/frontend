@@ -2,6 +2,9 @@ const STORAGE_KEY = "appSettings";
 
 export const SETTING_AUTO_ADVANCE = "autoAdvanceOnCorrect";
 export const MIN_SUCCESS_PERCENTAGE = "minSuccessPercentage";
+export const SETTING_SHUFFLE_ANSWERS = "shuffleAnswers";
+export const SETTING_RANDOMIZE_QUESTIONS = "randomizeQuestions";
+export const SETTING_HIDE_ANSWERS = "hideAnswersDuringTest";
 
 export interface SettingDefinition {
   key: string;
@@ -16,6 +19,9 @@ export interface SettingDefinition {
 const DEFAULT_SETTINGS: Record<string, boolean | number> = {
   [SETTING_AUTO_ADVANCE]: false,
   [MIN_SUCCESS_PERCENTAGE]: 75,
+  [SETTING_SHUFFLE_ANSWERS]: true,
+  [SETTING_RANDOMIZE_QUESTIONS]: true,
+  [SETTING_HIDE_ANSWERS]: false,
 };
 
 export function loadSettings(): Record<string, boolean | number> {
