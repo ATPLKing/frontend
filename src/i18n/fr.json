@@ -45,6 +45,8 @@
     "filters": "Filtres",
     "unseenOnly": "Questions jamais vues uniquement",
     "unseenOnlyDescription": "Ne montrer que les questions qui ne sont jamais apparues dans un test précédent.",
+    "notesOnly": "Questions avec notes uniquement",
+    "notesOnlyDescription": "Ne montrer que les questions pour lesquelles vous avez ajouté une note personnelle.",
     "test": "TEST",
     "exam": "EXAMEN",
     "examSoon": "Mode EXAMEN bientôt disponible",

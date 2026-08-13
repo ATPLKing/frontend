@@ -14,6 +14,7 @@ import { shuffleArray } from "../utils/array";
 import { createTest, saveTest, setCurrentTestId, getSeenQuestionIds } from "../utils/test";
 import { loadQuestionBanks } from "../utils/questionBank";
 import { loadSavedFlags, FLAG_NONE } from "../utils/flag";
+import { loadSavedNotes } from "../utils/note";
 import {
   getBooleanSetting,
   getNumberSetting,
@@ -38,9 +39,11 @@ export default function HomePage() {
   const [examSnackbar, setExamSnackbar] = useState(false);
   const [flagFilter, setFlagFilter] = useState<number[]>([]);
   const [unseenOnly, setUnseenOnly] = useState(false);
+  const [notesOnly, setNotesOnly] = useState(false);
 
   const savedFlags = useMemo(() => loadSavedFlags(), []);
   const seenIds = useMemo(() => getSeenQuestionIds(), []);
+  const savedNotes = useMemo(() => loadSavedNotes(), []);
 
   const selectedBank = useMemo(
     () => banks.find((bank) => bank.id === selectedBankId) ?? null,
@@ -57,9 +60,11 @@ export default function HomePage() {
         flagFilter.length === 0 ||
         flagFilter.includes(savedFlags[q.id] ?? FLAG_NONE);
       const unseenMatch = !unseenOnly || !seenIds.has(q.id);
-      return flagMatch && unseenMatch;
+      const notesMatch =
+        !notesOnly || Object.prototype.hasOwnProperty.call(savedNotes, q.id);
+      return flagMatch && unseenMatch && notesMatch;
     });
-  }, [questions, flagFilter, savedFlags, unseenOnly, seenIds]);
+  }, [questions, flagFilter, savedFlags, unseenOnly, seenIds, notesOnly, savedNotes]);
 
   const filteredQuestions = useMemo(
     () =>
@@ -212,6 +217,8 @@ export default function HomePage() {
                     onFlagFilterChange={setFlagFilter}
                     unseenOnly={unseenOnly}
                     onUnseenOnlyChange={setUnseenOnly}
+                    notesOnly={notesOnly}
+                    onNotesOnlyChange={setNotesOnly}
                   />
                 </Box>
                 <SubjectAccordion

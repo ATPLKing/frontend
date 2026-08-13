@@ -15,6 +15,8 @@ interface QuestionFilterPanelProps {
   onFlagFilterChange: (value: number[]) => void;
   unseenOnly: boolean;
   onUnseenOnlyChange: (value: boolean) => void;
+  notesOnly: boolean;
+  onNotesOnlyChange: (value: boolean) => void;
 }
 
 export default function QuestionFilterPanel({
@@ -22,6 +24,8 @@ export default function QuestionFilterPanel({
   onFlagFilterChange,
   unseenOnly,
   onUnseenOnlyChange,
+  notesOnly,
+  onNotesOnlyChange,
 }: QuestionFilterPanelProps) {
   const { t } = useTranslation();
 
@@ -72,6 +76,29 @@ export default function QuestionFilterPanel({
           <Switch
             checked={unseenOnly}
             onChange={(event) => onUnseenOnlyChange(event.target.checked)}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 2,
+            py: 1,
+          }}
+        >
+          <Box>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {t("home.notesOnly")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t("home.notesOnlyDescription")}
+            </Typography>
+          </Box>
+          <Switch
+            checked={notesOnly}
+            onChange={(event) => onNotesOnlyChange(event.target.checked)}
           />
         </Box>
       </AccordionDetails>
