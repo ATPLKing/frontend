@@ -43,6 +43,11 @@ export interface QuestionBank {
   questions: Question[];
 }
 
+export interface FilterOption {
+  value: string;
+  name: string;
+}
+
 export interface TestParams {
   mode: string;
   bankId: string;

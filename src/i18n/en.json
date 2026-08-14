@@ -34,9 +34,14 @@
     "passed": "Passed",
     "failed": "Failed",
     "timeElapsed": "Time:",
-    "dateFrom": "From",
-    "dateTo": "To",
     "showingLast": "Showing last {{count}} tests",
+    "bank": "Question bank",
+    "subject": "Subject",
+    "all": "All",
+    "reset": "Reset filters",
+    "noResults": "No tests match the selected filters."
+  },
+  "filters": {
     "filters": "Filters",
     "period": "Period",
     "periodDescription": "Only show tests in this date range.",
@@ -46,9 +51,8 @@
     "subjectDescription": "Only show tests for this subject.",
     "all": "All",
     "reset": "Reset filters",
-    "noResults": "No tests match the selected filters.",
-    "noData": "No data yet.",
-    "empty": "No statistics yet. Start a test to get going!"
+    "dateFrom": "From",
+    "dateTo": "To"
   },
   "settings": {
     "title": "Settings",

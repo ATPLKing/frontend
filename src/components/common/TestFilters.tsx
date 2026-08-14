@@ -10,13 +10,9 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
+import type { FilterOption } from "../../utils/types";
 
-export interface FilterOption {
-  value: string;
-  name: string;
-}
-
-interface DashboardFiltersProps {
+interface TestFiltersProps {
   dateFrom: string;
   dateTo: string;
   onDateFromChange: (value: string) => void;
@@ -31,7 +27,7 @@ interface DashboardFiltersProps {
   active: boolean;
 }
 
-export default function DashboardFilters({
+export default function TestFilters({
   dateFrom,
   dateTo,
   onDateFromChange,
@@ -44,16 +40,16 @@ export default function DashboardFilters({
   onSubjectChange,
   onReset,
   active,
-}: DashboardFiltersProps) {
+}: TestFiltersProps) {
   const { t } = useTranslation();
 
   return (
     <Accordion
       disableGutters
-      sx={{ border: 1, borderColor: "divider", borderRadius: 1, mb: 2 }}
+      sx={{ border: 1, borderColor: "divider", borderRadius: 1 }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="subtitle1">{t("dashboard.filters")}</Typography>
+        <Typography variant="subtitle1">{t("filters.filters")}</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 3, py: 2 }}>
         <Box
@@ -68,15 +64,15 @@ export default function DashboardFilters({
         >
           <Box>
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("dashboard.period")}
+              {t("filters.period")}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t("dashboard.periodDescription")}
+              {t("filters.periodDescription")}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
             <TextField
-              label={t("dashboard.dateFrom")}
+              label={t("filters.dateFrom")}
               type="date"
               size="small"
               value={dateFrom}
@@ -84,7 +80,7 @@ export default function DashboardFilters({
               slotProps={{ inputLabel: { shrink: true } }}
             />
             <TextField
-              label={t("dashboard.dateTo")}
+              label={t("filters.dateTo")}
               type="date"
               size="small"
               value={dateTo}
@@ -106,10 +102,10 @@ export default function DashboardFilters({
         >
           <Box>
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("dashboard.bank")}
+              {t("filters.bank")}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t("dashboard.bankDescription")}
+              {t("filters.bankDescription")}
             </Typography>
           </Box>
           <TextField
@@ -119,7 +115,7 @@ export default function DashboardFilters({
             onChange={(event) => onBankChange(event.target.value)}
             sx={{ minWidth: 220 }}
           >
-            <MenuItem value="">{t("dashboard.all")}</MenuItem>
+            <MenuItem value="">{t("filters.all")}</MenuItem>
             {bankOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.name}
@@ -140,10 +136,10 @@ export default function DashboardFilters({
         >
           <Box>
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("dashboard.subject")}
+              {t("filters.subject")}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t("dashboard.subjectDescription")}
+              {t("filters.subjectDescription")}
             </Typography>
           </Box>
           <TextField
@@ -153,7 +149,7 @@ export default function DashboardFilters({
             onChange={(event) => onSubjectChange(event.target.value)}
             sx={{ minWidth: 220 }}
           >
-            <MenuItem value="">{t("dashboard.all")}</MenuItem>
+            <MenuItem value="">{t("filters.all")}</MenuItem>
             {subjectOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.name}
@@ -165,7 +161,7 @@ export default function DashboardFilters({
         {active && (
           <Box sx={{ display: "flex", justifyContent: "flex-end", pt: 1 }}>
             <Button size="small" onClick={onReset}>
-              {t("dashboard.reset")}
+              {t("filters.reset")}
             </Button>
           </Box>
         )}

@@ -1,5 +1,5 @@
 import { generateID } from "./helper";
-import type { Test, TestParams } from "./types";
+import type { FilterOption, Test, TestParams } from "./types";
 
 const SAVED_TESTS_KEY = "savedTests";
 const CURRENT_TEST_ID_KEY = "current-test-id";
@@ -81,4 +81,28 @@ export function getSeenQuestionIds(): Set<string> {
   );
   persistSeenIds(migrated);
   return migrated;
+}
+
+export function getBankFilterOptions(tests: Test[]): FilterOption[] {
+  const map = new Map<string, string>();
+  tests.forEach((test) => {
+    const value = test.bankId || test.database;
+    if (!value || map.has(value)) return;
+    map.set(value, test.bankName || test.database || value);
+  });
+  return [...map.entries()].map(([value, name]) => ({ value, name }));
+}
+
+export function getSubjectFilterOptions(
+  tests: Test[],
+  bankId: string
+): FilterOption[] {
+  const set = new Set<string>();
+  tests
+    .filter((test) => !bankId || test.bankId === bankId)
+    .forEach((test) => {
+      const value = test.subject || test.uv;
+      if (value) set.add(value);
+    });
+  return [...set].map((value) => ({ value, name: value }));
 }

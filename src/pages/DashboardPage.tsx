@@ -13,11 +13,15 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import PercentIcon from "@mui/icons-material/Percent";
 import TimerIcon from "@mui/icons-material/Timer";
 import { useTranslation } from "react-i18next";
-import { loadSavedTests } from "../utils/test";
+import {
+  getBankFilterOptions,
+  getSubjectFilterOptions,
+  loadSavedTests,
+} from "../utils/test";
 import { getNumberSetting, MIN_SUCCESS_PERCENTAGE } from "../utils/settings";
 import { formatSeconds } from "../utils/time";
 import ScoreChart from "../components/dashboard/ScoreChart";
-import DashboardFilters from "../components/dashboard/DashboardFilters";
+import TestFilters from "../components/common/TestFilters";
 
 const MAX_CHART_POINTS = 20;
 
@@ -83,26 +87,15 @@ export default function DashboardPage() {
 
   const allTests = useMemo(() => Object.values(loadSavedTests()), []);
 
-  const bankOptions = useMemo(() => {
-    const map = new Map<string, string>();
-    allTests.forEach((test) => {
-      const value = test.bankId || test.database;
-      if (!value || map.has(value)) return;
-      map.set(value, test.bankName || test.database || value);
-    });
-    return [...map.entries()].map(([value, name]) => ({ value, name }));
-  }, [allTests]);
+  const bankOptions = useMemo(
+    () => getBankFilterOptions(allTests),
+    [allTests]
+  );
 
-  const subjectOptions = useMemo(() => {
-    const set = new Set<string>();
-    allTests
-      .filter((test) => !selectedBank || test.bankId === selectedBank)
-      .forEach((test) => {
-        const value = test.subject || test.uv;
-        if (value) set.add(value);
-      });
-    return [...set].map((value) => ({ value, name: value }));
-  }, [allTests, selectedBank]);
+  const subjectOptions = useMemo(
+    () => getSubjectFilterOptions(allTests, selectedBank),
+    [allTests, selectedBank]
+  );
 
   const stats = useMemo(() => {
     const fromTime = dateFrom ? new Date(dateFrom).getTime() : null;
@@ -197,7 +190,7 @@ export default function DashboardPage() {
         {t("dashboard.title")}
       </Typography>
 
-      <DashboardFilters
+      <TestFilters
         dateFrom={dateFrom}
         dateTo={dateTo}
         onDateFromChange={setDateFrom}

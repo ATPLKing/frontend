@@ -34,9 +34,14 @@
     "passed": "Réussi",
     "failed": "Échoué",
     "timeElapsed": "Temps :",
-    "dateFrom": "Du",
-    "dateTo": "Au",
     "showingLast": "Derniers {{count}} tests affichés",
+    "bank": "Banque de questions",
+    "subject": "Sujet",
+    "all": "Tous",
+    "reset": "Réinitialiser les filtres",
+    "noResults": "Aucun test ne correspond aux filtres sélectionnés."
+  },
+  "filters": {
     "filters": "Filtres",
     "period": "Période",
     "periodDescription": "Ne montrer que les tests dans cette plage de dates.",
@@ -46,9 +51,8 @@
     "subjectDescription": "Ne montrer que les tests de ce sujet.",
     "all": "Tous",
     "reset": "Réinitialiser les filtres",
-    "noResults": "Aucun test ne correspond aux filtres sélectionnés.",
-    "noData": "Aucune donnée pour le moment.",
-    "empty": "Aucune statistique pour le moment. Lancez un test pour commencer !"
+    "dateFrom": "Du",
+    "dateTo": "Au"
   },
   "settings": {
     "title": "Paramètres",

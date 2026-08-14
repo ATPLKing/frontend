@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import HistoricTable from "../components/historic/HistoricTable";
+import TestFilters from "../components/common/TestFilters";
 import AppSnackbar from "../components/common/AppSnackbar";
 import ConfirmDialog from "../components/common/ConfirmDialog";
 import {
   createTest,
   deleteTest,
+  getBankFilterOptions,
+  getSubjectFilterOptions,
   loadSavedTests,
   saveTest,
   setCurrentTestId,
@@ -21,6 +24,10 @@ export default function HistoricPage() {
   const { t } = useTranslation();
   const [tests, setTests] = useState<Record<string, Test>>(() => loadSavedTests());
   const [filter, setFilter] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [selectedBank, setSelectedBank] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [confirmState, setConfirmState] = useState<{
@@ -31,15 +38,36 @@ export default function HistoricPage() {
   const [snackbar, setSnackbar] = useState("");
 
   const testsArray = useMemo(() => Object.values(tests), [tests]);
-  const filtered = useMemo(
-    () =>
-      testsArray.filter((test) =>
-        `${test.bankName ?? ""} ${test.subject ?? test.uv ?? ""}`
-          .toLowerCase()
-          .includes(filter.trim().toLowerCase())
-      ),
-    [testsArray, filter]
+  const bankOptions = useMemo(
+    () => getBankFilterOptions(testsArray),
+    [testsArray]
   );
+  const subjectOptions = useMemo(
+    () => getSubjectFilterOptions(testsArray, selectedBank),
+    [testsArray, selectedBank]
+  );
+  const filtered = useMemo(() => {
+    const text = filter.trim().toLowerCase();
+    const fromTime = dateFrom ? new Date(dateFrom).getTime() : null;
+    const toTime = dateTo
+      ? new Date(dateTo + "T23:59:59.999").getTime()
+      : null;
+    return testsArray.filter((test) => {
+      if (
+        text &&
+        !`${test.bankName ?? ""} ${test.subject ?? test.uv ?? ""}`
+          .toLowerCase()
+          .includes(text)
+      )
+        return false;
+      const time = new Date(test.saveAt ?? test.createdAt).getTime();
+      if (fromTime !== null && time < fromTime) return false;
+      if (toTime !== null && time > toTime) return false;
+      if (selectedBank && test.bankId !== selectedBank) return false;
+      if (selectedSubject && test.subject !== selectedSubject) return false;
+      return true;
+    });
+  }, [testsArray, filter, dateFrom, dateTo, selectedBank, selectedSubject]);
   const displayed = filtered.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -85,6 +113,35 @@ export default function HistoricPage() {
     setPage(0);
   }
 
+  function handleDateFromChange(value: string) {
+    setDateFrom(value);
+    setPage(0);
+  }
+
+  function handleDateToChange(value: string) {
+    setDateTo(value);
+    setPage(0);
+  }
+
+  function handleBankChange(value: string) {
+    setSelectedBank(value);
+    setSelectedSubject("");
+    setPage(0);
+  }
+
+  function handleSubjectChange(value: string) {
+    setSelectedSubject(value);
+    setPage(0);
+  }
+
+  function handleResetFilters() {
+    setDateFrom("");
+    setDateTo("");
+    setSelectedBank("");
+    setSelectedSubject("");
+    setPage(0);
+  }
+
   function handleRowsPerPageChange(value: number) {
     setRowsPerPage(value);
     setPage(0);
@@ -95,6 +152,28 @@ export default function HistoricPage() {
       <Typography variant="h5" align="center" sx={{ mt: 2 }}>
         {t("historic.title")}
       </Typography>
+
+      <Box sx={{ mt: 3 }}>
+        <TestFilters
+          dateFrom={dateFrom}
+          dateTo={dateTo}
+          onDateFromChange={handleDateFromChange}
+          onDateToChange={handleDateToChange}
+          bankOptions={bankOptions}
+          selectedBank={selectedBank}
+          onBankChange={handleBankChange}
+          subjectOptions={subjectOptions}
+          selectedSubject={selectedSubject}
+          onSubjectChange={handleSubjectChange}
+          onReset={handleResetFilters}
+          active={
+            dateFrom !== "" ||
+            dateTo !== "" ||
+            selectedBank !== "" ||
+            selectedSubject !== ""
+          }
+        />
+      </Box>
 
       <HistoricTable
         displayed={displayed}
