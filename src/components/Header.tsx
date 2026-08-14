@@ -17,6 +17,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HistoryIcon from "@mui/icons-material/History";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import LanguageIcon from "@mui/icons-material/Language";
 import CheckIcon from "@mui/icons-material/Check";
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -85,6 +86,15 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
+            <MenuItem
+              onClick={() => {
+                handleMenuClose();
+                navigate("/dashboard");
+              }}
+            >
+              <SpaceDashboardIcon sx={{ mr: 1, fontSize: 20 }} />
+              {t("header.dashboard")}
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 handleMenuClose();

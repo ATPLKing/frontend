@@ -9,6 +9,7 @@ import ResultPage from "./pages/ResultPage";
 import HistoricPage from "./pages/HistoricPage";
 import AdminPage from "./pages/AdminPage";
 import SettingsPage from "./pages/SettingsPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function AppContent() {
   const { theme } = useThemeMode();
@@ -22,6 +23,7 @@ function AppContent() {
         <Route path="/quiz" element={<QuizPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/historic" element={<HistoricPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/setting" element={<SettingsPage />} />
         <Route path="*" element={<HomePage />} />
