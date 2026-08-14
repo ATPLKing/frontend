@@ -51,7 +51,7 @@ export default function TestFilters({
   return (
     <Accordion
       disableGutters
-      sx={{ border: 1, borderColor: "divider", borderRadius: 1 }}
+      sx={{ border: 1, borderColor: "divider", borderRadius: 1, my: 2 }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="subtitle1">{t("filters.filters")}</Typography>
