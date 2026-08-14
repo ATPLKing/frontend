@@ -52,7 +52,9 @@
     "all": "All",
     "reset": "Reset filters",
     "dateFrom": "From",
-    "dateTo": "To"
+    "dateTo": "To",
+    "futureDate": "The date cannot be in the future.",
+    "toBeforeFrom": "The end date must be after the start date."
   },
   "settings": {
     "title": "Settings",

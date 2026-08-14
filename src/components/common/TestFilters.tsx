@@ -43,6 +43,11 @@ export default function TestFilters({
 }: TestFiltersProps) {
   const { t } = useTranslation();
 
+  const today = new Date().toISOString().split("T")[0];
+  const toBeforeFrom = Boolean(dateFrom && dateTo && dateTo < dateFrom);
+  const fromInFuture = Boolean(dateFrom && dateFrom > today);
+  const toInFuture = Boolean(dateTo && dateTo > today);
+
   return (
     <Accordion
       disableGutters
@@ -77,7 +82,12 @@ export default function TestFilters({
               size="small"
               value={dateFrom}
               onChange={(event) => onDateFromChange(event.target.value)}
-              slotProps={{ inputLabel: { shrink: true } }}
+              error={fromInFuture}
+              helperText={fromInFuture ? t("filters.futureDate") : undefined}
+              slotProps={{
+                inputLabel: { shrink: true },
+                htmlInput: { max: today },
+              }}
             />
             <TextField
               label={t("filters.dateTo")}
@@ -85,7 +95,18 @@ export default function TestFilters({
               size="small"
               value={dateTo}
               onChange={(event) => onDateToChange(event.target.value)}
-              slotProps={{ inputLabel: { shrink: true } }}
+              error={toInFuture || toBeforeFrom}
+              helperText={
+                toBeforeFrom
+                  ? t("filters.toBeforeFrom")
+                  : toInFuture
+                    ? t("filters.futureDate")
+                    : undefined
+              }
+              slotProps={{
+                inputLabel: { shrink: true },
+                htmlInput: { min: dateFrom || undefined, max: today },
+              }}
             />
           </Box>
         </Box>

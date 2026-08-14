@@ -52,7 +52,9 @@
     "all": "Tous",
     "reset": "Réinitialiser les filtres",
     "dateFrom": "Du",
-    "dateTo": "Au"
+    "dateTo": "Au",
+    "futureDate": "La date ne peut pas être dans le futur.",
+    "toBeforeFrom": "La date de fin doit être postérieure à la date de début."
   },
   "settings": {
     "title": "Paramètres",
